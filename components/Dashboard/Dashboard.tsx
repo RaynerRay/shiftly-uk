@@ -11,19 +11,22 @@ import {
 } from "@/components/ui/card";
 
 import { getAdminAnalytics } from "@/actions/stats";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 import AnalyticsCard from "../AnalyticsCard";
 import { getDoctorsAdmin } from "@/actions/users";
 import { getInitials } from "@/utils/generateInitials";
 import ApproveBtn from "./ApproveBtn";
 import { getAppointments } from "@/actions/appointments";
 import { PatientProps } from "@/app/(back)/dashboard/doctors/layout";
+import { Session } from "next-auth";
 
-export default async function Dashboard() {
+export default async function Dashboard({
+  session,
+}: {
+  session: Session | null;
+})  {
   const analytics = await getAdminAnalytics();
   const doctors = (await getDoctorsAdmin()) || [];
-  const session = await getServerSession(authOptions);
+  // const session = await getServerSession(authOptions);
   const user = session?.user;
   const appointments = (await getAppointments()).data || [];
 

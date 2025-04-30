@@ -34,11 +34,21 @@ import { getInitials } from './../../utils/generateInitials';
 import { cn } from "@/lib/utils";
 import generateSlug from "@/utils/generateSlug";
 
+// Define a proper type for user roles
+type UserRole = 'USER' | 'ADMIN' | 'DOCTOR' | 'CLIENT' | 'INDIVIDUALCLIENT';
+
+// Define the navigation item type
+interface NavItem {
+  title: string;
+  path: string;
+  icon: React.ForwardRefExoticComponent<any>;  // eslint-disable-line @typescript-eslint/no-explicit-any
+}
+
 export default function NavBar({ session }: { session: Session }) {
   const user = session.user;
   const router = useRouter();
   const pathname = usePathname();
-  const role = user?.role;
+  const role = user?.role as UserRole;
   const id = user.id;
   const slug = generateSlug(user.name ?? "");
 
@@ -47,8 +57,28 @@ export default function NavBar({ session }: { session: Session }) {
     router.push("/login");
   }
 
-  const roles = {
+  const roles: Record<UserRole, NavItem[]> = {
     USER: [
+      { title: "Dashboard", path: "/dashboard", icon: Home },
+      {
+        title: "My Appointments",
+        path: "/dashboard/user/appointments",
+        icon: AlarmClock,
+      },
+      { title: "Professionals", path: "/dashboard/user/doctors", icon: Users },
+      { title: "Inbox", path: "/dashboard/user/inbox", icon: Mail },
+    ],
+    CLIENT: [
+      { title: "Dashboard", path: "/dashboard", icon: Home },
+      {
+        title: "My Appointments", 
+        path: "/dashboard/user/appointments",
+        icon: AlarmClock,
+      },
+      { title: "Professionals", path: "/dashboard/user/doctors", icon: Users },
+      { title: "Inbox", path: "/dashboard/user/inbox", icon: Mail },
+    ],
+    INDIVIDUALCLIENT: [
       { title: "Dashboard", path: "/dashboard", icon: Home },
       {
         title: "My Appointments",

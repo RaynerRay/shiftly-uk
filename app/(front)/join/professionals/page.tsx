@@ -33,7 +33,7 @@ const faqs = {
    
     {
       qn: "What documents are required during the registration process?",
-      ans: "Carers should provide their up-to-date Mandatory Training Certificates or, optionally, an NVQ Diploma/Care Certificate. For specialist skills like medication administration or having a driving license, related certificates are needed. Nurses must provide their Mandatory Training Certificates. Both roles require a clear DBS certificate (no older than 2 years, ideally on a live register), a recent professional photo, and contact details for two referees.",
+      ans: "Carers should provide their up-to-date Mandatory Training Certificates or, optionally, an NVQ Diploma/Care Certificate. For specialist skills like medication administration or having a driving license, related certificates are needed. Nurses must provide their Mandatory Training Certificates. Both roles require a clear Disclosure and Barring Service certificate (DBS) certificate (no older than 2 years, ideally on a live register), a recent professional photo, and contact details for two referees.",
     },
     {
       qn: "Who can serve as my referee?",

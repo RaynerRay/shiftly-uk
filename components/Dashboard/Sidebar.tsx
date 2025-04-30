@@ -20,13 +20,24 @@ import { Session } from "next-auth";
 // import { signOut } from "next-auth/react";
 import generateSlug from "@/utils/generateSlug";
 
+// Define a proper type for user roles
+type UserRole = 'USER' | 'ADMIN' | 'DOCTOR' | 'CLIENT' | 'INDIVIDUALCLIENT';
+
+// Define the navigation item type
+interface NavItem {
+  title: string;
+  path: string;
+  icon: React.ForwardRefExoticComponent<any>;  // eslint-disable-line @typescript-eslint/no-explicit-any
+}
+
 export default function Sidebar({ session }: { session: Session }) {
   const { user } = session;
-  const role = user?.role;
+  const role = user?.role as UserRole;
   const id = user.id;
   const slug = generateSlug(user.name ?? "");
   const pathname = usePathname();
-  const roles = {
+  
+  const roles: Record<UserRole, NavItem[]> = {
     USER: [
       { title: "Dashboard", path: "/dashboard", icon: Home },
       {
@@ -41,6 +52,26 @@ export default function Sidebar({ session }: { session: Session }) {
       //   path: "/dashboard/user/settings",
       //   icon: Settings,
       // },
+    ],
+    CLIENT: [
+      { title: "Dashboard", path: "/dashboard", icon: Home },
+      {
+        title: "My Appointments",
+        path: "/dashboard/user/appointments",
+        icon: AlarmClock,
+      },
+      { title: "Professionals", path: "/dashboard/user/doctors", icon: Users },
+      { title: "Inbox", path: "/dashboard/user/inbox", icon: Mail },
+    ],
+    INDIVIDUALCLIENT: [
+      { title: "Dashboard", path: "/dashboard", icon: Home },
+      {
+        title: "My Appointments",
+        path: "/dashboard/user/appointments",
+        icon: AlarmClock,
+      },
+      { title: "Professionals", path: "/dashboard/user/doctors", icon: Users },
+      { title: "Inbox", path: "/dashboard/user/inbox", icon: Mail },
     ],
     ADMIN: [
       { title: "Dashboard", path: "/dashboard", icon: Home },
@@ -84,50 +115,7 @@ export default function Sidebar({ session }: { session: Session }) {
   };
 
   const sideBarLinks = roles[role] || [];
-  // const sideBarLinks = [
-  //   {
-  //     name: "Dashboard",
-  //     path: "/dashboard",
-  //     icon: Home,
-  //   },
-
-  //   {
-  //     name: "Products",
-  //     path: "/dashboard/products",
-  //     icon: Package,
-  //   },
-  //   {
-  //     name: "Orders",
-  //     path: "/dashboard/orders",
-  //     icon: ShoppingCart,
-  //     badgeCount: 6,
-  //   },
-  //   {
-  //     name: "Customers",
-  //     path: "/dashboard/customers",
-  //     icon: Users,
-  //   },
-  //   {
-  //     name: "Analytics",
-  //     path: "/dashboard/analytics",
-  //     icon: LineChart,
-  //   },
-  //   {
-  //     name: "Settings",
-  //     path: "/dashboard/settings",
-  //     icon: Settings,
-  //   },
-  //   {
-  //     name: "Online",
-  //     path: "/",
-  //     icon: Globe,
-  //   },
-  // ];
-  // const router = useRouter();
-  // async function handleLogout() {
-  //   await signOut();
-  //   router.push("/login");
-  // }
+  
   return (
     <div className="hidden border-r bg-muted/40 md:block">
       <div className="flex h-full max-h-screen flex-col gap-2">
@@ -136,10 +124,6 @@ export default function Sidebar({ session }: { session: Session }) {
             <Package2 className="h-6 w-6" />
             <span className="">Shiftly</span>
           </Link>
-          {/* <Button variant="outline" size="icon" className="ml-auto h-8 w-8">
-            <Bell className="h-4 w-4" />
-            <span className="sr-only">Toggle notifications</span>
-          </Button> */}
         </div>
         <div className="flex-1">
           <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
@@ -156,11 +140,6 @@ export default function Sidebar({ session }: { session: Session }) {
                 >
                   <Icon className="h-4 w-4" />
                   {item.title}
-                  {/* {item.badgeCount && (
-                    <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                      {item.badgeCount}
-                    </Badge>
-                  )} */}
                 </Link>
               );
             })}

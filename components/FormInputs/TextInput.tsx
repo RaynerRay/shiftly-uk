@@ -1,59 +1,49 @@
-import React from "react";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
+"use client";
 
-type TextInputProps = {
+import React from "react";
+import { FieldErrors, UseFormRegister } from "react-hook-form";
+
+type Props = {
   label: string;
-  register: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   name: string;
-  errors: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  register: UseFormRegister<any>;  // eslint-disable-line @typescript-eslint/no-explicit-any
+  errors?: FieldErrors;
   type?: string;
-  page?: string;
   placeholder?: string;
+  required?: boolean;
   className?: string;
-  isRequired?: boolean;
 };
 
-export default function TextInput({
+const TextInput = ({
   label,
-  register,
   name,
+  register,
   errors,
   type = "text",
   placeholder,
-  page,
-  className = "col-span-full",
-  isRequired = true,
-}: TextInputProps) {
+  required = false,
+  className,
+}: Props) => {
   return (
-    <div className={cn("grid gap-2", className)}>
-      {type === "password" && page === "login" ? (
-        <div className="flex items-center">
-          <Label htmlFor={`${name}`}> {label}</Label>
-          <Link
-            href="/forgot-password"
-            className="ml-auto inline-block text-sm underline"
-          >
-            Forgot your password?
-          </Link>
-        </div>
-      ) : (
-        <Label htmlFor={`${name}`}> {label}</Label>
-      )}
-
-      <Input
-        {...register(`${name}`, { required: isRequired })}
-        id={`${name}`}
-        name={`${name}`}
+    <div className={className}>
+      <label className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-200">
+        {label} {required && <span className="text-red-500">*</span>}
+      </label>
+      <input
         type={type}
-        autoComplete="name"
-        placeholder={placeholder ? placeholder : ""}
+        placeholder={placeholder}
+        {...register(name, {
+          required: required ? `${label} is required` : false,
+        })}
+        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent bg-white text-gray-800"
       />
-      {errors[`${name}`] && isRequired && (
-        <span className="text-red-600  text-sm">{label} is required</span>
+      {errors && errors[name] && (
+        <p className="mt-1 text-sm text-red-600">
+          {errors[name]?.message?.toString()}
+        </p>
       )}
     </div>
   );
-}
+};
+
+export default TextInput;

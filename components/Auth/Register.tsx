@@ -121,7 +121,7 @@ export default function RegisterWithBg({ role = "USER", plan = "" }: RegisterFor
               </label>
               <input
                 type="tel"
-                placeholder="+1 (555) 123-4567"
+                placeholder="+44 20 7123 4567"
                 {...register("phone", { required: "Phone number is required" })}
                 className={`h-14 w-full text-base px-5 rounded-xl border ${
                   errors.phone ? "border-red-300 dark:border-red-700" : "border-neutral-200 dark:border-neutral-700"

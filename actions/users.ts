@@ -7,18 +7,18 @@ import generateSlug from "@/utils/generateSlug";
 import bcrypt from "bcrypt";
 import { Resend } from "resend";
 import {
-  //  createAvailability, 
-  createDoctorProfile } from "./onboarding";
+  createDoctorProfile,
+  createClientProfile,
+  createIndividualClientProfile
+} from "./onboarding";
 import { generateTrackingNumber } from "@/lib/generateTracking";
 import { isEmailBlacklisted } from "@/lib/isEmailBlackListed";
-
 
 export async function createUser(formData: RegisterInputProps) {
   const resend = new Resend(process.env.RESEND_API_KEY);
   const { fullName, email, role, phone, password, plan } = formData;
-  try {
-    // Add these console.logs in your createUser function
 
+  try {
     if (isEmailBlacklisted(email)) {
       return {
         error: `Please use a valid, non-temporary email address.`,
@@ -26,27 +26,34 @@ export async function createUser(formData: RegisterInputProps) {
         data: null,
       };
     }
+
     const existingUser = await prismaClient.user.findUnique({
       where: {
         email,
       },
     });
+
     if (existingUser) {
       return {
         data: null,
-        error: `User with this email ( ${email})  already exists in the Database`,
+        error: `User with this email (${email}) already exists in the Database`,
         status: 409,
       };
     }
-    // Encrypt the Password =>bcrypt
+
+    // Encrypt the Password with bcrypt
     const hashedPassword = await bcrypt.hash(password, 10);
-    //Generate Token
+    
+    // Generate Token for email verification
     const generateToken = () => {
       const min = 100000; // Minimum 6-figure number
       const max = 999999; // Maximum 6-figure number
       return Math.floor(Math.random() * (max - min + 1)) + min;
     };
+    
     const userToken = generateToken();
+    
+    // Create the user first
     const newUser = await prismaClient.user.create({
       data: {
         name: fullName,
@@ -59,72 +66,113 @@ export async function createUser(formData: RegisterInputProps) {
         token: userToken,
       },
     });
-    const profileData = {
-      firstName: newUser.name.split(" ")[0] ?? "",
-      lastName: newUser.name.split(" ")[1] ?? "",
-      trackingNumber: generateTrackingNumber(),
-      userId: newUser.id,
-      phone: newUser.phone,
-      email: newUser.email,
-    };
-    const profile = await createDoctorProfile(profileData);
-    // const times = [
-    //   "7:00 AM",
-    //   "8:00 AM",
-    //   "9:00 AM",
-    //   "10:00 AM",
-    //   "11:00 AM",
-    //   "12:00 PM",
-    //   "1:00 PM",
-    //   "2:00 PM",
-    //   "3:00 PM",
-    //   "4:00 PM",
-    //   "5:00 PM",
-    //   "6:00 PM",
-    // ];
-    // const availabilityData = {
-    //   monday: times,
-    //   tuesday: times,
-    //   wednesday: times,
-    //   thursday: times,
-    //   friday: times,
-    //   saturday: times,
-    //   doctorProfileId: profile.data?.id,
-    // };
-    // await createAvailability(availabilityData);
-    
-    
-    //Send an Email with the Token on the link as a search param
-    const token = newUser.token;
-    // const userId = newUser.id;
-    const firstName = newUser.name.split(" ")[0];
-    const linkText = "Verify your Account ";
-    const message =
-      "Thank you for registering with Shiftly UK. To complete your registration and verify your email address, please enter the following 6-digit verification code on our website :";
-    
+
+    // After user creation, create the appropriate profile based on role
+    if (newUser && newUser.id) {
+      try {
+        if (role === "DOCTOR") {
+          // Create doctor profile
+          await createDoctorProfile({
+            firstName: newUser.name.split(" ")[0] || "",
+            lastName: newUser.name.split(" ")[1] || "",
+            trackingNumber: generateTrackingNumber(),
+            userId: newUser.id,
+            phone: newUser.phone,
+            email: newUser.email,
+          });
+        } 
+        else if (role === "CLIENT") {
+          // Create client profile
+          await createClientProfile({
+            name: fullName,
+            userId: newUser.id,
+            phone: newUser.phone,
+            email: newUser.email,
+            employersLiability: [],
+          });
+        } 
+        else if (role === "INDIVIDUALCLIENT") {
+          console.log("Creating individual client profile for user:", newUser.id);
+          // Create individual client profile
+          // Match the parameter names expected by the onboarding createIndividualClientProfile function
+          const individualClientResult = await createIndividualClientProfile({
+            name: fullName,  // Changed from fullName to name to match the onboarding function
+            userId: newUser.id,
+            phone: newUser.phone || "",
+            email: newUser.email,
+            trackingNumber: generateTrackingNumber(),  // Added this as it's required by the onboarding function
+          });
+          
+          console.log("Individual client profile creation result:", individualClientResult);
+          
+          if (individualClientResult.error) {
+            console.error("Failed to create individual client profile:", individualClientResult.error);
+          }
+        }
+      } catch (profileError) {
+        console.error(`Error creating profile for role ${role}:`, profileError);
+        // We don't want to fail the entire user registration if profile creation fails
+        // The user can complete their profile later
+      }
+    }
+
+    // Send verification email
+    try {
+      const token = newUser.token;
+      const firstName = newUser.name.split(" ")[0];
+      const linkText = "Verify your Account";
+      const message = "Thank you for registering with Shiftly UK. To complete your registration and verify your email address, please enter the following 6-digit verification code on our website:";
+      
       const sendMail = await resend.emails.send({
-      from: "Shiftly <info@shiftly.uk>",
-      to: email,
-      subject: "Verify Your Email Address",
-      react: EmailTemplate({ firstName, token, linkText, message }),
-    });
-   
-    
-    // console.log(token);
-    // console.log(sendMail);
-    // console.log(newUser);
+        from: "Shiftly <info@shiftly.uk>",
+        to: email,
+        subject: "Verify Your Email Address",
+        react: EmailTemplate({ firstName, token, linkText, message }),
+      });
+    } catch (emailError) {
+      console.error("Error sending verification email:", emailError);
+      // Continue even if email sending fails
+    }
+
     return {
       data: newUser,
       error: null,
       status: 200,
     };
   } catch (error) {
-    console.log(error);
+    console.error("Error in createUser:", error);
     return {
-      error: "Something went wrong",
+      error: "Something went wrong during user registration",
+      status: 500,
+      data: null,
     };
   }
 }
+
+
+export async function updateUserById(id: string) {
+  if (!id || id.trim() === '') {
+    return null;
+  }
+  
+  try {
+    const updatedUser = await prismaClient.user.update({
+      where: {
+        id,
+      },
+      data: {
+        isVerfied: true,
+      },
+    });
+    return updatedUser;
+  } catch (error) {
+    console.error("Error updating user verification status:", error);
+    return null;
+  }
+}
+
+
+
 
 export async function getUserById(id: string) {
   if (id) {
@@ -140,25 +188,6 @@ export async function getUserById(id: string) {
     }
   }
 }
-export async function updateUserById(id: string) {
-  if (id) {
-    try {
-      const updatedUser = await prismaClient.user.update({
-        where: {
-          id,
-        },
-        data: {
-          isVerfied: true,
-        },
-      });
-      return updatedUser;
-    } catch (error) {
-      console.log(error);
-    }
-  }
-}
-
-// Add this function to your actions/users.ts file
 
 export async function updateDoctorStatus(profileId: string, status: "PENDING" | "APPROVED" | "REJECTED") {
   "use server";

@@ -111,7 +111,7 @@ export default function AdditionalInfo({
               
               <div className="p-4 border border-green-200 bg-green-50 rounded-md dark:bg-green-900/20 dark:border-green-800">
                 <h4 className="font-medium text-green-900 dark:text-green-300 mb-1">Social Workers</h4>
-                <p className="text-sm text-green-700 dark:text-green-400">Upload Social Worker Certificate & DBS</p>
+                <p className="text-sm text-green-700 dark:text-green-400">Upload Social Worker Certificate & Disclosure and Barring Service certificate (DBS)</p>
               </div>
               
               <div className="p-4 border border-yellow-200 bg-yellow-50 rounded-md dark:bg-yellow-900/20 dark:border-yellow-800">

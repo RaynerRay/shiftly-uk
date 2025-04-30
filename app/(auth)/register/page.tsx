@@ -1,14 +1,10 @@
-import RegisterWithBg from "@/components/Auth/Register";
+// app/register/page.tsx
+import UserTypeSelection from "@/components/Auth/UserTypeSelection";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
-export default async function RegisterPage({ searchParams }: { searchParams: Promise<{ role?: string; plan?: string }> }) {
-  // Await searchParams to resolve the Promise
-  const resolvedSearchParams = await searchParams;
-  const role = resolvedSearchParams.role || "USER"; // Default to "USER" if undefined
-  const plan = resolvedSearchParams.plan || ""; // Default to empty string if undefined
-
+export default async function RegisterPage() {
   const session = await getServerSession(authOptions);
 
   // Redirect if already logged in
@@ -16,10 +12,9 @@ export default async function RegisterPage({ searchParams }: { searchParams: Pro
     redirect("/dashboard");
   }
 
-  // Pass role and plan to the client component
   return (
-    <div className="">
-      <RegisterWithBg role={role} plan={plan} />
+    <div>
+      <UserTypeSelection />
     </div>
   );
 }

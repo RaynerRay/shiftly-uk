@@ -12,7 +12,7 @@ import RadioInput from "../FormInputs/RadioInput";
 import { generateTrackingNumber } from "@/lib/generateTracking";
 import { createDoctorProfile, updateDoctorProfile } from "@/actions/onboarding";
 import { useOnboardingContext } from "@/context/context";
-import { DoctorProfile, Speciality } from "@prisma/client";
+import {  DoctorProfile, Speciality } from "@prisma/client";
 
 export type StepFormProps = {
   page: string;
@@ -161,7 +161,6 @@ export default function BioDataForm({
             register={register}
             name="middleName"
             errors={errors}
-            isRequired={false}
             placeholder="Eg. johndoe@gmail.com"
             className="col-span-full sm:col-span-1"
           />

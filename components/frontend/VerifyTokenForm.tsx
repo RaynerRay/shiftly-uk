@@ -78,14 +78,18 @@ export default function VerifyTokenForm({
       try {
         await updateUserById(id);
         setLoading(false);
-        // reset();
         toast.success("Account Verified");
+        
+        // Redirect based on user role
         if (role === "DOCTOR") {
           router.push(`/login?returnUrl=/onboarding`);
+        } else if (role === "CLIENT") {
+          router.push(`/login?returnUrl=/clientonboarding`);
+        } else if (role === "INDIVIDUALCLIENT") {
+          router.push(`/login?returnUrl=/individualonboarding`);
         } else {
           router.push("/login");
         }
-        //OnBoarding Page
       } catch (error) {
         setLoading(false);
         console.log(error);

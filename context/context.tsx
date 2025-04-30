@@ -6,8 +6,10 @@ import {
   PracticeFormProps,
   ProfileFormProps,
   additionalFormProps,
+  IndividualClientFormProps,
+  ClientProfileFormProps,
 } from "@/types/types";
-import { DoctorProfile } from "@prisma/client";
+// import { DoctorProfile } from "@prisma/client";
 //context => useState ta global level
 
 import { ReactNode, createContext, useContext, useState } from "react";
@@ -30,6 +32,10 @@ interface IOnBoardingContextData {
   setTruckingNumber: (value: string) => void;
   setDoctorProfileId: (value: string) => void;
   doctorProfileId: string;
+  indvidualClientProfileId: string;
+  setIndvidualClientProfileId: (value: string) => void;
+  clientProfileId: string;
+  setClientProfileId: (value: string) => void;
 
   //TRACK THE FORM DATA
   bioData: BioDataFormProps;
@@ -38,6 +44,8 @@ interface IOnBoardingContextData {
   refereeData: RefereeFormProps;
   practiceData: PracticeFormProps;
   additionalData: additionalFormProps;
+  individualClientData: IndividualClientFormProps;
+  ClientData: ClientProfileFormProps;
   savedDBData: any;
   setSavedDBData: (data: any) => void;
   setBioData: (data: BioDataFormProps) => void;
@@ -46,8 +54,40 @@ interface IOnBoardingContextData {
   setRefereeData: (data: RefereeFormProps) => void;
   setPracticeData: (data: PracticeFormProps) => void;
   setAdditionalData: (data: additionalFormProps) => void;
+  setIndividualClientData: (data: IndividualClientFormProps) => void;
+  setClientData: (data: ClientProfileFormProps) => void;
 }
 
+const initialIndividualClientData = {
+  fullName: "",
+  email: "",
+  phone: "",
+  address: "",
+
+  nextOfKinName: "",
+  nextOfKinNumber: "",
+
+  proofOfAddress: [],
+  userId: "",
+  trackingNumber: "",
+};
+const initialClientData = {
+  name: "",
+  email: "",
+  phone: "",
+  address: "",
+  city: "",
+  companyNumber: "",
+  cqcNumber: "",
+  organisationType: "",
+
+  companyLogo: "",
+  bio: "",
+
+  employersLiability: [],
+  userId: "",
+  trackingNumber: "",
+};
 const initialBioData = {
   firstName: "",
   lastName: "",
@@ -68,7 +108,6 @@ const initialProfileData = {
   yearsOfExperience: 0,
   // primarySpecialization: "",
   otherSpecialties: [],
-  
 };
 const initialContactData: ContactFormProps = {
   email: "",
@@ -104,25 +143,33 @@ const initialAdditionalData: additionalFormProps = {
   additionalDocs: [],
   page: "",
 };
-const initialContextData = {
+const initialContextData: IOnBoardingContextData = {
   setTruckingNumber: () => {},
   setDoctorProfileId: () => {},
+  setIndvidualClientProfileId: () => {},
+  setClientProfileId: () => {},
   setBioData: () => {},
   setProfileData: () => {},
   setContactData: () => {},
   setRefereeData: () => {},
   setPracticeData: () => {},
   setAdditionalData: () => {},
+  setIndividualClientData: () => {},
+  setClientData: () => {},
   savedDBData: {},
   setSavedDBData: () => {},
   truckingNumber: "",
   doctorProfileId: "",
+  clientProfileId: "",
+  indvidualClientProfileId: "",
   bioData: initialBioData,
   profileData: initialProfileData,
   contactData: initialContactData,
   refereeData: initialRefereeData,
   practiceData: initialPracticeData,
   additionalData: initialAdditionalData,
+  individualClientData: initialIndividualClientData,
+  ClientData: initialClientData,
 };
 
 const OnBoardingContext =
@@ -135,7 +182,13 @@ export function OnboardingContextProvider({
 }) {
   const [truckingNumber, setTruckingNumber] = useState<string>("");
   const [doctorProfileId, setDoctorProfileId] = useState<string>("");
+  const [indvidualClientProfileId, setIndvidualClientProfileId] = useState<string>("");
+  const [clientProfileId, setClientProfileId] = useState<string>("");
   const [bioData, setBioData] = useState<BioDataFormProps>(initialBioData);
+  const [individualClientData, setIndividualClientData] =
+    useState<IndividualClientFormProps>(initialIndividualClientData);
+  const [ClientData, setClientData] =
+    useState<ClientProfileFormProps>(initialClientData);
   const [profileData, setProfileData] =
     useState<ProfileFormProps>(initialProfileData);
   const [contactData, setContactData] =
@@ -149,23 +202,32 @@ export function OnboardingContextProvider({
   );
   const [savedDBData, setSavedDBData] = useState<any>({});
   console.log(savedDBData);
-  const contextValues = {
+  
+  const contextValues: IOnBoardingContextData = {
     truckingNumber,
     setTruckingNumber,
     doctorProfileId,
     setDoctorProfileId,
+    indvidualClientProfileId,
+    setIndvidualClientProfileId,
+    clientProfileId,
+    setClientProfileId,
     bioData,
     setBioData,
-    setProfileData,
     profileData,
+    setProfileData,
     contactData,
-    refereeData,
-    practiceData,
-    additionalData,
     setContactData,
+    refereeData,
     setRefereeData,
+    practiceData,
     setPracticeData,
+    additionalData,
     setAdditionalData,
+    individualClientData,
+    setIndividualClientData,
+    ClientData,
+    setClientData,
     savedDBData,
     setSavedDBData,
   };

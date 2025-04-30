@@ -16,6 +16,36 @@ export type LoginInputProps = {
   password: string;
 };
 
+export interface ClientProfileFormProps {
+  name: string;
+  companyNumber?: string | null;
+  cqcNumber?: string | null;
+  organisationType?: string | null;
+  companyLogo?: string | null;
+  bio?: string | null;
+  email?: string | null;
+  website?: string | null;
+  phone?: string | null;
+  city?: string | null;
+  address?: string | null;
+  employersLiability?: string[];
+  userId: string;
+}
+
+export interface IndividualClientFormProps {
+  fullName: string;
+  email: string;
+  phone: string;
+  address: string;
+  nextOfKinName: string;
+  nextOfKinNumber: string;
+  proofOfAddress?: string[];
+  userId: string;
+}
+
+
+
+
 export type BioDataFormProps = {
   firstName: string;
   lastName: string;

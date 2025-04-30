@@ -18,7 +18,7 @@ export default async function VerifyTrackingNumber() {
   const session = await getServerSession(authOptions);
   const id = session?.user.id;
   if (id) {
-    redirect(`/clientonboarding/${id}`);
+    redirect(`/individualonboarding/${id}`);
   }
   return (
     <div className="min-h-screen flex items-center justify-center">

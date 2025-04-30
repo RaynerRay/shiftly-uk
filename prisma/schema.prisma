@@ -7,26 +7,105 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Availability {
-  id              String        @id @default(auto()) @map("_id") @db.ObjectId
-  doctorProfileId String        @unique @db.ObjectId
-  doctorProfile   DoctorProfile @relation(fields: [doctorProfileId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  monday          String[]
-  tuesday         String[]
-  wednesday       String[]
-  thursday        String[]
-  friday          String[]
-  saturday        String[]
-  sunday          String[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+enum UserRole {
+  USER
+  ADMIN
+  DOCTOR
+  CLIENT
+  INDIVIDUALCLIENT
 }
+
+model User {
+  id            String         @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  slug          String         @default("slug")
+  email         String         @unique
+  phone         String
+  emailVerified DateTime?
+  image         String?
+  role          UserRole       @default(USER)
+  plan          String?
+  password      String
+  accounts      Account[]
+  sessions      Session[]
+  symptomIds    String[]
+  doctorProfile DoctorProfile?
+  clientProfile ClientProfile?
+
+  serviceId String?  @db.ObjectId
+  service   Service? @relation(fields: [serviceId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  specialityId String?     @db.ObjectId
+  speciality   Speciality? @relation(fields: [specialityId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  isVerfied               Boolean                  @default(false)
+  token                   Int
+  createdAt               DateTime                 @default(now())
+  updatedAt               DateTime                 @updatedAt
+  IndividualClientProfile IndividualClientProfile?
+}
+
+enum ClientStatus {
+  PENDING
+  APPROVED
+}
+
+model IndividualClientProfile {
+  id             String       @id @default(auto()) @map("_id") @db.ObjectId
+  userId         String       @unique @db.ObjectId
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  status         ClientStatus @default(PENDING)
+  trackingNumber String       @unique
+
+  fullName String?
+  email    String?
+  phone    String?
+  address  String?
+
+  nextOfKinName String?
+  nextOfKinNumber String?
+
+  proofOfAddress String[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model ClientProfile {
+  id             String       @id @default(auto()) @map("_id") @db.ObjectId
+  userId         String       @unique @db.ObjectId
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  status         ClientStatus @default(PENDING)
+  trackingNumber String       @unique
+
+  name                      String?
+  companyNumber String?
+  cqcNumber                 String?
+  organisationType          String?
+
+  companyLogo    String?
+  bio            String?
+
+  email   String?
+  website String?
+  phone   String?
+  city    String?
+  address String?
+
+  employersLiability String[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+
+
 enum DoctorStatus {
   PENDING
   APPROVED
   REJECTED
 }
+
 model DoctorProfile {
   id                   String        @id @default(auto()) @map("_id") @db.ObjectId
   userId               String        @unique @db.ObjectId
@@ -61,22 +140,37 @@ model DoctorProfile {
   refereeNumber     String?
 
   additionalDocs String[]
-  operationMode  String?     @default("Telehealth visit")
-  hourlyWage     Int         @default(15)
+  operationMode  String?  @default("Telehealth visit")
+  hourlyWage     Int      @default(15)
 
-  deductTaxBeforePayment Boolean     @default(true) // New field
-  band            String?
-  
+  deductTaxBeforePayment Boolean @default(true) // New field
+  band                   String?
+
   //SERVICES
-  serviceId      String?     @db.ObjectId
-  service        Service?    @relation(fields: [serviceId], references: [id])
-  specialtyId    String?     @db.ObjectId
-  specialty      Speciality? @relation(fields: [specialtyId], references: [id])
-  symptomIds     String[]    @db.ObjectId
-  createdAt      DateTime    @default(now())
-  updatedAt      DateTime?   @updatedAt
+  serviceId   String?     @db.ObjectId
+  service     Service?    @relation(fields: [serviceId], references: [id])
+  specialtyId String?     @db.ObjectId
+  specialty   Speciality? @relation(fields: [specialtyId], references: [id])
+  symptomIds  String[]    @db.ObjectId
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime?   @updatedAt
 }
 
+model Availability {
+  id              String        @id @default(auto()) @map("_id") @db.ObjectId
+  doctorProfileId String        @unique @db.ObjectId
+  doctorProfile   DoctorProfile @relation(fields: [doctorProfileId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  monday          String[]
+  tuesday         String[]
+  wednesday       String[]
+  thursday        String[]
+  friday          String[]
+  saturday        String[]
+  sunday          String[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
 
 model Account {
   id                String  @id @default(auto()) @map("_id") @db.ObjectId
@@ -105,11 +199,6 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-enum UserRole {
-  USER
-  ADMIN
-  DOCTOR
-}
 
 model BlogPost {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
@@ -181,8 +270,8 @@ enum PaymentStatus {
 }
 
 model Appointment {
-  id                       String            @id @default(auto()) @map("_id") @db.ObjectId
-  isCompleted              Boolean           @default(false)
+  id                       String    @id @default(auto()) @map("_id") @db.ObjectId
+  isCompleted              Boolean   @default(false)
   appointmentDate          DateTime?
   appointmentFormattedDate String
   doctorId                 String
@@ -191,63 +280,32 @@ model Appointment {
   charge                   Int
   appointmentTime          String?
   totalHours               Int?
-  
+
   // New fields
-  reference                String?            
-  paymentStatus            PaymentStatus     @default(pending)
-  
+  reference     String?
+  paymentStatus PaymentStatus @default(pending)
+
   // Existing fields
-  actualStartTime          DateTime?
-  actualFinishTime         DateTime?
-  actualHours              Float?            
-  finalCharge              Int?
-  
+  actualStartTime  DateTime?
+  actualFinishTime DateTime?
+  actualHours      Float?
+  finalCharge      Int?
+
   // Patient details
-  firstName                String?
-  lastName                 String?
-  gender                   String?
-  phone                    String?
-  email                    String?
-  companyName              String?
-  location                 String?
-  appointmentReason        String?
-  medicalDocuments         String[]
-  occupation               String?
-  status                   AppointmentStatus @default(pending)
-  meetingLink              String            @default("")
-  meetingProvider          String            @default("zoom")
-  
-  createdAt                DateTime          @default(now())
-  updatedAt                DateTime          @updatedAt
-}
+  firstName         String?
+  lastName          String?
+  gender            String?
+  phone             String?
+  email             String?
+  companyName       String?
+  location          String?
+  appointmentReason String?
+  medicalDocuments  String[]
+  occupation        String?
+  status            AppointmentStatus @default(pending)
+  meetingLink       String            @default("")
+  meetingProvider   String            @default("zoom")
 
-model User {
-  id            String         @id @default(auto()) @map("_id") @db.ObjectId
-  name          String
-  slug          String         @default("slug")
-  email         String         @unique
-  phone         String
-  emailVerified DateTime?
-  image         String?
-  role          UserRole       @default(USER)
-  plan          String?
-  password      String
-  accounts      Account[]
-  sessions      Session[]
-  symptomIds    String[]
-  doctorProfile DoctorProfile?
-
-  serviceId String?  @db.ObjectId
-  service   Service? @relation(fields: [serviceId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-
-  specialityId String?     @db.ObjectId
-  speciality   Speciality? @relation(fields: [specialityId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-
-  isVerfied Boolean  @default(false)
-  token     Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
-
-
-

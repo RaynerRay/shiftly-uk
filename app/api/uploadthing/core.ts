@@ -11,6 +11,12 @@ export const ourFileRouter = {
       return { uploadedBy: "Shiftly" };
     }
   ),
+  companyLogo: f({ image: { maxFileSize: "1MB" } }).onUploadComplete(
+    async ({  file }) => {
+      console.log("file url", file.url);
+      return { uploadedBy: "Shiftly" };
+    }
+  ),
   serviceImage: f({ image: { maxFileSize: "1MB" } }).onUploadComplete(
     async ({  file }) => {
       console.log("file url", file.url);
@@ -35,8 +41,20 @@ export const ourFileRouter = {
     console.log("file url", file.url);
     return { uploadedBy: "Shiftly" };
   }),
+  clientProofOfAddress: f({
+    pdf: { maxFileSize: "4MB", maxFileCount: 2 },
+  }).onUploadComplete(async ({  file }) => {
+    console.log("file url", file.url);
+    return { uploadedBy: "Shiftly" };
+  }),
+  employersLiability: f({
+    pdf: { maxFileSize: "4MB", maxFileCount: 2 },
+  }).onUploadComplete(async ({  file }) => {
+    console.log("file url", file.url);
+    return { uploadedBy: "Shiftly" };
+  }),
   additionalDocs: f({
-    pdf: { maxFileSize: "4MB", maxFileCount: 4 },
+    pdf: { maxFileSize: "16MB", maxFileCount: 4 },
   }).onUploadComplete(async ({  file }) => {
     console.log("file url", file.url);
     return { uploadedBy: "Shiftly" };

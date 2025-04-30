@@ -82,13 +82,61 @@ export async function createDoctorProfile(formData: any) {
     };
   }
 }
-export async function createAvailability(data: any) {
+
+export async function createClientProfile(formData: any) {
+  const {
+    name,
+    trackingNumber,
+    userId,
+    phone,
+    email,
+  } = formData;
+
   try {
-    const newAvail = await prismaClient.availability.create({
-      data,
+    // First check if a profile already exists for this user
+    const existingProfile = await prismaClient.clientProfile.findUnique({
+      where: {
+        userId,
+      },
     });
-    console.log(newAvail);
-    return newAvail;
+
+    if (existingProfile) {
+      // If profile exists, update it instead of creating a new one
+      const updatedProfile = await prismaClient.clientProfile.update({
+        where: {
+          userId,
+        },
+        data: {
+          name,
+          trackingNumber,
+          phone,
+          email,
+        },
+      });
+
+      return {
+        data: updatedProfile,
+        status: 201,
+        error: null,
+      };
+    }
+
+    // If no profile exists, create a new one
+    const newProfile = await prismaClient.clientProfile.create({
+      data: {
+        name,
+        trackingNumber,
+        userId,
+        phone,
+        email,
+      },
+    });
+
+    return {
+      data: newProfile,
+      status: 201,
+      error: null,
+    };
   } catch (error) {
     console.log(error);
     return {
@@ -98,6 +146,131 @@ export async function createAvailability(data: any) {
     };
   }
 }
+
+export async function createIndividualClientProfile(formData: any) {
+  const {
+    name,
+    trackingNumber,
+    userId,
+    phone,
+    email,
+  } = formData;
+
+  try {
+    // Validate inputs
+    if (!userId || userId.trim() === '') {
+      return {
+        data: null,
+        status: 400,
+        error: "Invalid user ID provided",
+      };
+    }
+
+    console.log("Creating individual profile with data:", {
+      name,
+      trackingNumber,
+      userId,
+      phone,
+      email
+    });
+
+    // First check if a profile already exists for this user
+    let existingProfile = null;
+    try {
+      existingProfile = await prismaClient.individualClientProfile.findUnique({
+        where: {
+          userId,
+        },
+      });
+    } catch (findError) {
+      console.error("Error finding existing individual profile:", findError);
+      // Continue execution even if find fails
+    }
+
+    if (existingProfile) {
+      console.log("Found existing profile, updating it");
+      // If profile exists, update it instead of creating a new one
+      const updatedProfile = await prismaClient.individualClientProfile.update({
+        where: {
+          userId,
+        },
+        data: {
+          fullName: name,
+          trackingNumber,
+          phone,
+          email,
+        },
+      });
+
+      return {
+        data: updatedProfile,
+        status: 200,
+        error: null,
+      };
+    }
+
+    console.log("No existing profile found, creating new one");
+    // If no profile exists, create a new one
+    const newProfile = await prismaClient.individualClientProfile.create({
+      data: {
+        fullName: name,
+        trackingNumber,
+        userId,
+        phone: phone || "",
+        email,
+        // Required fields with empty defaults
+        address: "",
+        nextOfKinName: "",
+        nextOfKinNumber: "",
+        proofOfAddress: [],
+      },
+    });
+
+    console.log("Successfully created new individual profile:", newProfile.id);
+    return {
+      data: newProfile,
+      status: 201,
+      error: null,
+    };
+  } catch (error) {
+    console.error("Error in createIndividualClientProfile:", error);
+    return {
+      data: null,
+      status: 500,
+      error: "Something went wrong while creating individual client profile",
+    };
+  }
+}
+
+// export async function createAvailability(availabilityData: any) {
+//   try {
+//     const newAvailability = await prismaClient.availability.create({
+//       data: {
+//         monday: availabilityData.monday,
+//         tuesday: availabilityData.tuesday,
+//         wednesday: availabilityData.wednesday,
+//         thursday: availabilityData.thursday,
+//         friday: availabilityData.friday,
+//         saturday: availabilityData.saturday,
+//         doctorProfileId: availabilityData.doctorProfileId,
+//       },
+//     });
+
+//     return {
+//       data: newAvailability,
+//       error: null,
+//       status: 200,
+//     };
+//   } catch (error) {
+//     console.log(error);
+//     return {
+//       data: null,
+//       error: "Failed to create availability",
+//       status: 500,
+//     };
+//   }
+// }
+
 
 export async function updateDoctorProfile(id: string | undefined, data: any) {
   if (id) {
@@ -120,34 +293,6 @@ export async function updateDoctorProfile(id: string | undefined, data: any) {
         data: null,
         status: 500,
         error: "Profile was not updated",
-      };
-    }
-  }
-}
-export async function updateAvailabilityById(
-  id: string | undefined,
-  data: any
-) {
-  if (id) {
-    try {
-      const updatedAva = await prismaClient.availability.update({
-        where: {
-          id,
-        },
-        data,
-      });
-      console.log(updatedAva);
-      return {
-        data: updatedAva,
-        status: 201,
-        error: null,
-      };
-    } catch (error) {
-      console.log(error);
-      return {
-        data: null,
-        status: 500,
-        error: "Availability was not updated",
       };
     }
   }
@@ -262,3 +407,49 @@ export async function getDoctorProfileById(userId: string | undefined) {
     }
   }
 }
+
+export async function updateAvailabilityById(
+  id: string | undefined,
+  data: any
+) {
+  if (id) {
+    try {
+      const updatedAva = await prismaClient.availability.update({
+        where: {
+          id,
+        },
+        data,
+      });
+      console.log(updatedAva);
+      return {
+        data: updatedAva,
+        status: 201,
+        error: null,
+      };
+    } catch (error) {
+      console.log(error);
+      return {
+        data: null,
+        status: 500,
+        error: "Availability was not updated",
+      };
+    }
+  }
+}
+export async function createAvailability(data: any) {
+  try {
+    const newAvail = await prismaClient.availability.create({
+      data,
+    });
+    console.log(newAvail);
+    return newAvail;
+  } catch (error) {
+    console.log(error);
+    return {
+      data: null,
+      status: 500,
+      error: "Something went wrong",
+    };
+  }
+}
+
