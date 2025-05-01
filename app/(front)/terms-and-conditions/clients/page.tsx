@@ -8,7 +8,7 @@ interface Section {
   content: string[];
 }
 
-const page = () => {
+const Page = () => {
   const [activeSection, setActiveSection] = useState<string>('');
   const sectionRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
@@ -238,4 +238,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

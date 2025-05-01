@@ -40,8 +40,33 @@ export default function DoctorDetails({
   const [baseAmount, setBaseAmount] = useState(0);
   
   const router = useRouter();
-  console.log(baseAmount)
   
+  // React hooks setup before any conditional returns
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<AppointmentProps>({
+    defaultValues: {
+      email: appointment?.email || "",
+      firstName: appointment?.firstName || patient?.name?.split(" ")[0],
+      phone: appointment?.phone ?? "",
+      lastName: appointment?.lastName || patient?.name?.split(" ")[1],
+      location:  "",
+      gender: appointment?.gender ?? "",
+    },
+  });
+  
+  // Effect hooks before conditional returns
+  useEffect(() => {
+    const hourlyWage = doctor.doctorProfile?.hourlyWage ?? 0;
+    const numberOfHours = selectedTimes.length;
+    const newBaseAmount = numberOfHours * hourlyWage;
+    setBaseAmount(newBaseAmount);
+    setTotalCost(newBaseAmount + (newBaseAmount * platformPercentage));
+  }, [selectedTimes, doctor.doctorProfile?.hourlyWage]);
+
+  console.log(baseAmount)
   // Check if user is authorized
   const isAuthorized = session?.user && 
     ["ADMIN", "CLIENT", "INDIVIDUALCLIENT"].includes(session.user.role as string);
@@ -83,7 +108,6 @@ export default function DoctorDetails({
   const day = getDayFromDate(date?.toDateString());
   const longDate = getLongDate(date!.toDateString());
   const times = doctor.doctorProfile?.availability?.[day] ?? null;
-  const hourlyRate = doctor.doctorProfile?.hourlyWage ?? 0;
   
   const genderOptions = [
     { label: "Male", value: "male" },
@@ -185,33 +209,6 @@ export default function DoctorDetails({
       }
     }
   };
-
-  // Calculate total cost whenever selected times change
-  useEffect(() => {
-    const numberOfHours = selectedTimes.length;
-    const baseAmount = numberOfHours * hourlyRate;
-    setTotalCost( baseAmount + (baseAmount * platformPercentage ) );
-  }, [selectedTimes, hourlyRate]);
-  
-  useEffect(() => {
-    const numberOfHours = selectedTimes.length;
-    setBaseAmount( numberOfHours * hourlyRate);
-  }, [selectedTimes, hourlyRate]);
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<AppointmentProps>({
-    defaultValues: {
-      email: appointment?.email || "",
-      firstName: appointment?.firstName || patient?.name?.split(" ")[0],
-      phone: appointment?.phone ?? "",
-      lastName: appointment?.lastName || patient?.name?.split(" ")[1],
-      location:  "",
-      gender: appointment?.gender ?? "",
-    },
-  });
 
   async function onSubmit(data: AppointmentProps) {
     if (selectedTimes.length === 0) {
@@ -322,8 +319,7 @@ export default function DoctorDetails({
                     <div className="mt-4 p-4 bg-sky-50 rounded-lg">
                       <p className="text-sky-800 font-medium">Selected Times: {selectedTimes.join(", ")}</p>
                       <p className="text-sky-800 font-medium">Duration: {selectedTimes.length} hour(s)</p>
-                      {/* <p className="text-sky-800 font-medium">Base Amount {baseAmount}</p>
-                      <p className="text-sky-800 font-medium">Total Cost: £{totalCost}</p> */}
+                      <p className="text-sky-800 font-medium">Total Cost: £{totalCost}</p>
                     </div>
                   )}
                   <div className="py-4">
