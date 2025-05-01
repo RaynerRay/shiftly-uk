@@ -55,8 +55,8 @@ const Navbar = ({ session }: { session: Session | null }) => {
               Join as Professional
             </Link>
             <div className="h-4 w-px bg-sky-400" />
-            <Link href="/help" className="text-gray-50 text-sm hover:text-white transition-colors">
-              Help Center
+            <Link href="/terms-and-conditions" className="text-gray-50 text-sm hover:text-white transition-colors">
+              Terms & Conditions
             </Link>
           </div>
         </div>

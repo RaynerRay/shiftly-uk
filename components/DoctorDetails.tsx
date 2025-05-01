@@ -7,7 +7,7 @@ import { getDayFromDate } from "@/utils/getDayFromDate";
 import { getLongDate } from "@/utils/getLongDate";
 import { Loader2, MoveRight } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
 import TextInput from "./FormInputs/TextInput";
 import RadioInput from "./FormInputs/RadioInput";
 import { TextAreaInput } from "./FormInputs/TextAreaInput";
@@ -18,6 +18,7 @@ import FrontDoctorDetails from "./FrontDoctorDetails";
 import { createAppointment } from "@/actions/appointments";
 import { platformPercentage } from "@/lib/constants";
 import { generateAppointmentReference } from "@/utils/generateReference";
+import Link from "next/link";
 
 export default function DoctorDetails({
   doctor,
@@ -29,7 +30,7 @@ export default function DoctorDetails({
   doctorProfile: DoctorProfile | null | undefined;
 }) {
   const [isActive, setIsActive] = useState("availability");
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const patient = session?.user;
   const [step, setStep] = useState(1);
   const [selectedTimes, setSelectedTimes] = useState<string[]>([]);
@@ -37,6 +38,47 @@ export default function DoctorDetails({
   const [date, setDate] = React.useState<Date | undefined>(new Date());
   const [totalCost, setTotalCost] = useState(0);
   const [baseAmount, setBaseAmount] = useState(0);
+  
+  const router = useRouter();
+  console.log(baseAmount)
+  
+  // Check if user is authorized
+  const isAuthorized = session?.user && 
+    ["ADMIN", "CLIENT", "INDIVIDUALCLIENT"].includes(session.user.role as string);
+
+  // If not authenticated or loading authentication, show loading
+  if (status === "loading") {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="h-8 w-8 animate-spin text-sky-600" />
+      </div>
+    );
+  }
+  // If not authorized, show restricted access message
+  if (!isAuthorized) {
+    return (
+      <div className="p-8 bg-white rounded-lg shadow text-center">
+        <h2 className="text-2xl font-bold mb-4">Restricted Access</h2>
+        <p className="text-gray-700 mb-6">
+          Only registered clients can book appointments with our professionals.
+        </p>
+        <div className="flex flex-col sm:flex-row justify-center gap-4">
+          <Link 
+            href="/register" 
+            className="inline-block bg-sky-600 hover:bg-sky-700 text-white font-medium py-2 px-6 rounded-md transition-colors"
+          >
+            Register Now
+          </Link>
+          <Link 
+            href="/login" 
+            className="inline-block bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium py-2 px-6 rounded-md transition-colors"
+          >
+            Login
+          </Link>
+        </div>
+      </div>
+    );
+  }
   
   const day = getDayFromDate(date?.toDateString());
   const longDate = getLongDate(date!.toDateString());
@@ -48,9 +90,6 @@ export default function DoctorDetails({
     { label: "Female", value: "female" },
   ];
 
-  const router = useRouter();
-  // const params = useSearchParams();
-
   // Function to disable past dates
   const disablePastDates = (date: Date) => {
     const today = new Date();
@@ -58,104 +97,102 @@ export default function DoctorDetails({
     return date < today;
   };
 
-
- // Function to convert time string to minutes for comparison
-const convertTimeToMinutes = (time: string): number => {
-  const [timeStr, period] = time.split(/(?=[ap]m)/i);
-  let [hours, minutes] = timeStr.split(':').map(Number);
-  
-  // If minutes is undefined (because there's no colon in the time), set it to 0
-  if (isNaN(minutes)) minutes = 0;
-  
-  // Convert to 24-hour format
-  if (period.toLowerCase() === 'pm' && hours !== 12) {
-    hours += 12;
-  } else if (period.toLowerCase() === 'am' && hours === 12) {
-    hours = 0;
-  }
-  
-  return hours * 60 + minutes;
-};
-
-// Function to check if times are consecutive
-const areTimesConsecutive = (times: string[], newTime: string): boolean => {
-  if (times.length === 0) return true;
-  
-  const sortedTimes = [...times].sort((a, b) => 
-    convertTimeToMinutes(a) - convertTimeToMinutes(b)
-  );
-  
-  const newTimeMinutes = convertTimeToMinutes(newTime);
-  const earliestTime = convertTimeToMinutes(sortedTimes[0]);
-  const latestTime = convertTimeToMinutes(sortedTimes[sortedTimes.length - 1]);
-  
-  // Check if the new time is one hour before the earliest or one hour after the latest
-  return (
-    Math.abs(newTimeMinutes - earliestTime) === 60 || 
-    Math.abs(newTimeMinutes - latestTime) === 60
-  );
-};
-
-// Updated time selection handler
-const handleTimeSelection = (time: string) => {
-  if (selectedTimes.includes(time)) {
-    // If removing a time, make sure remaining times stay consecutive
-    const remainingTimes = selectedTimes.filter(t => t !== time);
+  // Function to convert time string to minutes for comparison
+  const convertTimeToMinutes = (time: string): number => {
+    const [timeStr, period] = time.split(/(?=[ap]m)/i);
+    let [hours, minutes] = timeStr.split(':').map(Number);
     
-    // If we're left with 0 or 1 times, that's always valid
-    if (remainingTimes.length <= 1) {
-      setSelectedTimes(remainingTimes);
-      return;
+    // If minutes is undefined (because there's no colon in the time), set it to 0
+    if (isNaN(minutes)) minutes = 0;
+    
+    // Convert to 24-hour format
+    if (period.toLowerCase() === 'pm' && hours !== 12) {
+      hours += 12;
+    } else if (period.toLowerCase() === 'am' && hours === 12) {
+      hours = 0;
     }
     
-    // Sort the remaining times
-    const sortedTimes = [...remainingTimes].sort((a, b) => 
+    return hours * 60 + minutes;
+  };
+
+  // Function to check if times are consecutive
+  const areTimesConsecutive = (times: string[], newTime: string): boolean => {
+    if (times.length === 0) return true;
+    
+    const sortedTimes = [...times].sort((a, b) => 
       convertTimeToMinutes(a) - convertTimeToMinutes(b)
     );
     
-    // Check if all remaining times are consecutive
-    let allConsecutive = true;
-    for (let i = 1; i < sortedTimes.length; i++) {
-      const prevTime = convertTimeToMinutes(sortedTimes[i-1]);
-      const currTime = convertTimeToMinutes(sortedTimes[i]);
-      if (Math.abs(currTime - prevTime) !== 60) {
-        allConsecutive = false;
-        break;
-      }
-    }
+    const newTimeMinutes = convertTimeToMinutes(newTime);
+    const earliestTime = convertTimeToMinutes(sortedTimes[0]);
+    const latestTime = convertTimeToMinutes(sortedTimes[sortedTimes.length - 1]);
     
-    if (allConsecutive) {
-      setSelectedTimes(remainingTimes);
-    } else {
-      toast.error("Removing this time would break consecutive selection");
-    }
-  } else {
-    // Adding a new time
-    if (selectedTimes.length === 0) {
-      // First selection is always valid
-      setSelectedTimes([time]);
-    } else {
-      // Check if the new time would be consecutive with existing selections
-      if (areTimesConsecutive(selectedTimes, time)) {
-        const newTimes = [...selectedTimes, time].sort((a, b) => 
-          convertTimeToMinutes(a) - convertTimeToMinutes(b)
-        );
-        setSelectedTimes(newTimes);
+    // Check if the new time is one hour before the earliest or one hour after the latest
+    return (
+      Math.abs(newTimeMinutes - earliestTime) === 60 || 
+      Math.abs(newTimeMinutes - latestTime) === 60
+    );
+  };
+
+  // Updated time selection handler
+  const handleTimeSelection = (time: string) => {
+    if (selectedTimes.includes(time)) {
+      // If removing a time, make sure remaining times stay consecutive
+      const remainingTimes = selectedTimes.filter(t => t !== time);
+      
+      // If we're left with 0 or 1 times, that's always valid
+      if (remainingTimes.length <= 1) {
+        setSelectedTimes(remainingTimes);
+        return;
+      }
+      
+      // Sort the remaining times
+      const sortedTimes = [...remainingTimes].sort((a, b) => 
+        convertTimeToMinutes(a) - convertTimeToMinutes(b)
+      );
+      
+      // Check if all remaining times are consecutive
+      let allConsecutive = true;
+      for (let i = 1; i < sortedTimes.length; i++) {
+        const prevTime = convertTimeToMinutes(sortedTimes[i-1]);
+        const currTime = convertTimeToMinutes(sortedTimes[i]);
+        if (Math.abs(currTime - prevTime) !== 60) {
+          allConsecutive = false;
+          break;
+        }
+      }
+      
+      if (allConsecutive) {
+        setSelectedTimes(remainingTimes);
       } else {
-        toast.error("Please select consecutive time slots");
+        toast.error("Removing this time would break consecutive selection");
+      }
+    } else {
+      // Adding a new time
+      if (selectedTimes.length === 0) {
+        // First selection is always valid
+        setSelectedTimes([time]);
+      } else {
+        // Check if the new time would be consecutive with existing selections
+        if (areTimesConsecutive(selectedTimes, time)) {
+          const newTimes = [...selectedTimes, time].sort((a, b) => 
+            convertTimeToMinutes(a) - convertTimeToMinutes(b)
+          );
+          setSelectedTimes(newTimes);
+        } else {
+          toast.error("Please select consecutive time slots");
+        }
       }
     }
-  }
-};
+  };
 
   // Calculate total cost whenever selected times change
- 
   useEffect(() => {
     const numberOfHours = selectedTimes.length;
     const baseAmount = numberOfHours * hourlyRate;
     setTotalCost( baseAmount + (baseAmount * platformPercentage ) );
   }, [selectedTimes, hourlyRate]);
-  console.log(baseAmount)
+  
   useEffect(() => {
     const numberOfHours = selectedTimes.length;
     setBaseAmount( numberOfHours * hourlyRate);
@@ -253,11 +290,11 @@ const handleTimeSelection = (time: string) => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="">
                 <Calendar
-  value={date}
-  onSelect={(newDate) => setDate(newDate)}
-  disabled={disablePastDates}
-  className="rounded-md border"
-/>
+                  value={date}
+                  onSelect={(newDate) => setDate(newDate)}
+                  disabled={disablePastDates}
+                  className="rounded-md border"
+                />
                 </div>
                 <div className="">
                   <span className="text-sky-600 text-sm">

@@ -29,12 +29,22 @@ export default async function SearchPage(props: any) { // eslint-disable-line @t
           <p className="text-gray-700 mb-6">
             Only registered clients can access our database of professionals.
           </p>
+
+          <div className="flex">
+          <Link 
+            href="/signup" 
+            className="inline-block bg-blue-600 hover:bg-sky-700 text-white font-medium py-2 px-6 rounded-md transition-colors"
+          >
+            Login
+          </Link>
           <Link 
             href="/register" 
-            className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-md transition-colors"
+            className="inline-block bg-blue-600 hover:bg-sky-700 text-white font-medium py-2 px-6 rounded-md transition-colors"
           >
             Register Now
           </Link>
+          </div>
+          
         </div>
       </div>
     );
