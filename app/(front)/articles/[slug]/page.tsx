@@ -5,9 +5,13 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { ShareButtons } from "./ShareButtons";
 
-// Generate metadata for social sharing and SEO
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  // Await params before using its properties in Next.js 15
+// Fixed for Next.js 15 - params is a Promise
+export async function generateMetadata({ 
+  params 
+}: { 
+  params: Promise<{ slug: string }> 
+}): Promise<Metadata> {
+  // Resolve the params Promise
   const resolvedParams = await params;
   const slug = resolvedParams.slug;
   
@@ -45,10 +49,15 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default async function BlogPostPage(props: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
-  // Await params before accessing properties
-  const params = await props.params;
-  const slug = (params as { slug: string }).slug;
+// Fixed for Next.js 15 - params is a Promise
+export default async function BlogPostPage({ 
+  params 
+}: { 
+  params: Promise<{ slug: string }> 
+}) {
+  // Resolve the params Promise
+  const resolvedParams = await params;
+  const slug = resolvedParams.slug;
   
   const response = await getBlogPostBySlug(slug);
   

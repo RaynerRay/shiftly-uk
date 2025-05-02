@@ -15,7 +15,7 @@ import ImageInput from "../FormInputs/ImageInput";
 type BlogFormProps = {
   title: string;
   description: string;
-  blogPost?: any; // Existing blog post data for editing
+  blogPost?: any;  // eslint-disable-line @typescript-eslint/no-explicit-any
   isEditing?: boolean;
 };
 
@@ -138,7 +138,7 @@ export default function BlogForm({
           throw new Error();
         }
       }
-    } catch (error: any) {
+    } catch (error: any) {  // eslint-disable-line @typescript-eslint/no-explicit-any
       toast.error(error.message || "Something went wrong");
     } finally {
       setIsLoading(false);
