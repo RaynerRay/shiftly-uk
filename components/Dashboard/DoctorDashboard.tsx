@@ -24,6 +24,7 @@ import {
   CircleEllipsis,
   History,
   RefreshCcw,
+  Settings,
   X,
 } from "lucide-react";
 import { getDoctorProfileById } from "@/actions/onboarding";
@@ -56,12 +57,12 @@ export default async function DoctorDashboard({
   });
   const patients = Array.from(uniquePatientsMap.values()) as PatientProps[];
   return (
-    <div className="px-8 py-4">
-      <div className="flex items-center justify-between">
-        <h1 className="scroll-m-20 text-2xl font-extrabold tracking-tight mb-3">
+    <div className="px-4 sm:px-6 md:px-8 py-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+        <h1 className="scroll-m-20 text-xl sm:text-2xl font-extrabold tracking-tight mb-3">
           Welcome, {user?.name}
         </h1>
-        <div className="">
+        <div className="flex items-center space-x-3">
           <button
             className={cn(
               "py-2 px-3 rounded-md text-xs flex items-center space-x-2",
@@ -84,6 +85,17 @@ export default async function DoctorDashboard({
           </button>
         </div>
       </div>
+      
+      <div className="bg-blue-50 p-4 rounded-lg mt-2 mb-6 border border-sky-200 flex flex-col sm:flex-row sm:items-center justify-between">
+        <p className="text-sky-700 font-medium mb-3 sm:mb-0">📅 Please set up your available days and working hours so clients can book appointments with you.</p>
+        <Button asChild variant="outline" className="flex items-center gap-2 border border-sky-500 self-start">
+          <Link href="/dashboard/doctor/settings">
+            <Settings className="w-4 h-4" />
+            Settings
+          </Link>
+        </Button>
+      </div>
+      
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 py-6">
         {analytics.map((item, i) => {
           return <AnalyticsCard key={i} data={item} />;
@@ -110,7 +122,7 @@ export default async function DoctorDashboard({
                       "border mb-2 border-gray-300 shadow-sm text-xs bg-white py-3 px-2 inline-block w-full rounded-md dark:text-slate-900"
                     }
                   >
-                    <div className="flex justify-between items-center pb-2">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center pb-2">
                       <h2>
                         {item.firstName} {item.lastName}
                       </h2>
@@ -119,7 +131,7 @@ export default async function DoctorDashboard({
                         <span>{timeAgo(item.createdAt)}</span>
                       </div>
                     </div>
-                    <div className="flex items-center gap-4">
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-4">
                       <div className="flex items-center font-semibold">
                         <CalendarCheck className="w-4 h-4 mr-2" />
                         <span>{item.appointmentFormattedDate}</span>

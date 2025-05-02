@@ -1,5 +1,5 @@
 import React from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+// import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AvailabilitySettings from "@/components/Dashboard/Doctor/AvailabilitySettings";
 import { getDoctorProfileById } from "@/actions/onboarding";
 import { getServerSession } from "next-auth";
@@ -17,19 +17,24 @@ export default async function page() {
       <h2 className="pb-4 scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-4xl">
         Settings
       </h2>
-      <Tabs defaultValue="availability" className="w-[800px]">
+
+      <AvailabilitySettings profile={profile?.data} />
+
+      {/* <Tabs defaultValue="availability" className="w-[800px]">
         <TabsList>
           <TabsTrigger value="availability">Availability Settings</TabsTrigger>
-          {/* <TabsTrigger value="service">Service Settings</TabsTrigger> */}
+          <TabsTrigger value="service">Service Settings</TabsTrigger>
         </TabsList>
         <TabsContent value="availability" className="w-full">
-          {/* Availability Form */}
+          Availability Form
           <AvailabilitySettings profile={profile?.data} />
         </TabsContent>
-        {/* <TabsContent value="service">
+        <TabsContent value="service">
           <DoctorServiceSettings profile={profile?.data} />
-        </TabsContent> */}
-      </Tabs>
+        </TabsContent>
+      </Tabs> */}
     </div>
   );
 }
+
+

@@ -69,7 +69,7 @@ export default function DoctorDetails({
   console.log(baseAmount)
   // Check if user is authorized
   const isAuthorized = session?.user && 
-    ["ADMIN", "CLIENT", "INDIVIDUALCLIENT"].includes(session.user.role as string);
+    ["ADMIN", "CLIENT", "INDIVIDUALCLIENT", "USER", "DOCTOR"].includes(session.user.role as string);
 
   // If not authenticated or loading authentication, show loading
   if (status === "loading") {

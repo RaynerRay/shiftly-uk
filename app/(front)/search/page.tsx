@@ -18,7 +18,9 @@ export default async function SearchPage(props: any) { // eslint-disable-line @t
   const isAuthorized = session?.user && 
     (session.user.role === "ADMIN" || 
      session.user.role === "CLIENT" || 
-     session.user.role === "INDIVIDUALCLIENT");
+     session.user.role === "INDIVIDUALCLIENT" ||
+     session.user.role === "USER" 
+     );
 
   // If not authorized, show the restricted access message
   if (!isAuthorized) {

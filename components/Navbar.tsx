@@ -137,7 +137,7 @@ const Navbar = ({ session }: { session: Session | null }) => {
                         Dashboard
                       </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer hover:bg-gray-100 rounded">
+                    {/* <DropdownMenuItem className="cursor-pointer hover:bg-gray-100 rounded">
                       <Link href="/profile" className="flex items-center w-full py-1">
                         <span className="bg-blue-100 p-1 rounded mr-2">
                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-600"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
@@ -152,7 +152,7 @@ const Navbar = ({ session }: { session: Session | null }) => {
                         </span>
                         Settings
                       </Link>
-                    </DropdownMenuItem>
+                    </DropdownMenuItem> */}
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={handleLogout} className="cursor-pointer hover:bg-red-50 rounded text-red-600">
                       <div className="flex items-center py-1">
@@ -244,9 +244,9 @@ const Navbar = ({ session }: { session: Session | null }) => {
                         <Link href="/dashboard" onClick={() => setIsOpen(false)} className="text-center bg-gray-100 text-gray-800 px-3 py-2 rounded-md hover:bg-gray-200 transition-colors text-sm">
                           Dashboard
                         </Link>
-                        <Link href="/profile" onClick={() => setIsOpen(false)} className="text-center bg-gray-100 text-gray-800 px-3 py-2 rounded-md hover:bg-gray-200 transition-colors text-sm">
+                        {/* <Link href="/profile" onClick={() => setIsOpen(false)} className="text-center bg-gray-100 text-gray-800 px-3 py-2 rounded-md hover:bg-gray-200 transition-colors text-sm">
                           Profile
-                        </Link>
+                        </Link> */}
                       </div>
                       <button
                         onClick={() => {

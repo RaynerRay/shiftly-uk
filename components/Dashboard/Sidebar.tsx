@@ -4,7 +4,6 @@ import {
   ExternalLink,
   Home,
   Mail,
-  Package2,
   Power,
   Settings,
   User2,
@@ -120,10 +119,22 @@ export default function Sidebar({ session }: { session: Session }) {
     <div className="hidden border-r bg-muted/40 md:block">
       <div className="flex h-full max-h-screen flex-col gap-2">
         <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-          <Link href="/" className="flex items-center gap-2 font-semibold">
-            <Package2 className="h-6 w-6" />
-            <span className="">Shiftly</span>
-          </Link>
+          {/* Logo */}
+          <div className="flex items-center">
+              <Link href="/" className="flex items-center group">
+                <div className="relative">
+                  <div className="text-sky-800 text-3xl group-hover:text-blue-600 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
+                      <path d="M8 12h8" />
+                      <path d="M12 8v8" />
+                    </svg>
+                  </div>
+                  <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-blue-600 rounded-full hidden group-hover:block" />
+                </div>
+                <span className="text-xl ml-2 text-sky-900 font-bold tracking-tight group-hover:text-blue-600 transition-colors">SHIFTLY</span>
+              </Link>
+            </div>
         </div>
         <div className="flex-1">
           <nav className="grid items-start px-2 text-sm font-medium lg:px-4">

@@ -32,7 +32,7 @@ export default function SelectedTimes({
         <div className="py-6 grid grid-cols-3 gap-3">
           <button
             onClick={handleAddAll}
-            className="flex items-center justify-center py-2 px-2 border border-blue-500  rounded-md text-sm"
+            className="flex items-center justify-center py-2 px-2 border border-blue-500  rounded-md text-xs"
           >
             <span>Add All</span>
             <Plus className="w-3 h-3 ml-2" />
@@ -42,7 +42,7 @@ export default function SelectedTimes({
               <button
                 onClick={() => handleAddTime(time)}
                 key={i}
-                className="flex items-center justify-center py-2 px-2 border border-blue-100 dark:border-gray-600  rounded-md text-sm"
+                className="flex items-center justify-center py-2 px-2 border border-blue-100 dark:border-gray-600  rounded-md text-xs"
               >
                 <span>{time}</span>
                 <Plus className="w-3 h-3 ml-2" />
@@ -59,7 +59,7 @@ export default function SelectedTimes({
               <button
                 onClick={() => handleRemoveTime(i)}
                 key={i}
-                className="flex items-center py-2 px-2 border border-blue-500 bg-blue-50 dark:text-slate-900 rounded-md text-sm justify-center"
+                className="flex items-center text-xs py-2 px-2 border border-blue-500 bg-blue-50 dark:text-slate-900 rounded-md text-sm justify-center"
               >
                 <span>{time}</span>
                 <X className="w-3 h-3 ml-2" />
@@ -79,7 +79,7 @@ export default function SelectedTimes({
 
           <button
             onClick={clearAll}
-            className="flex items-center justify-center py-2 px-2 border border-red-500  rounded-md text-sm"
+            className="flex items-center justify-center py-2 px-2 border border-red-500  rounded-md text-xs"
           >
             <span>Clear All</span>
             <X className="w-3 h-3 ml-2" />

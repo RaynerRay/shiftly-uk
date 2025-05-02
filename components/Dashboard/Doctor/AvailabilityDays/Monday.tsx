@@ -26,7 +26,7 @@ export default function Monday({
   const availability = profile?.availability || "";
 
   const [selectedTimes, setSelectedTimes] = useState(initialData);
-  console.log(selectedTimes, profile?.id);
+  // console.log(selectedTimes, profile?.id);
   function handleAddTime(time: string) {
     if (!selectedTimes.includes(time)) {
       setSelectedTimes((prevTimes) => [...prevTimes, time]);
