@@ -23,7 +23,7 @@ export const ourFileRouter = {
       return { uploadedBy: "Shiftly" };
     }
   ),
-  BlogImage: f({ image: { maxFileSize: "1MB" } }).onUploadComplete(
+  blogImage: f({ image: { maxFileSize: "1MB" } }).onUploadComplete(
     async ({  file }) => {
       console.log("file url", file.url);
       return { uploadedBy: "Shiftly" };

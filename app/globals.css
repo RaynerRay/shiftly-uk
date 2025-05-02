@@ -1,7 +1,23 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@plugin "@tailwindcss/typography";
+
 @custom-variant dark (&:is(.dark *));
+
+/* styles/globals.css */
+.prose img {
+  @apply rounded-xl shadow-lg;
+}
+
+.prose a {
+  @apply text-blue-600 underline hover:text-blue-800;
+}
+
+.prose blockquote {
+  @apply border-l-4 border-blue-500 pl-4 italic text-gray-700;
+}
+
 
 @theme inline {
   --color-background: var(--background);

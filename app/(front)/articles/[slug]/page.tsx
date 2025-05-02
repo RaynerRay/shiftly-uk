@@ -2,6 +2,48 @@ import React from "react";
 import { getBlogPostBySlug } from "@/actions/blogs";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
+import { ShareButtons } from "./ShareButtons";
+
+// Generate metadata for social sharing and SEO
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  // Await params before using its properties in Next.js 15
+  const resolvedParams = await params;
+  const slug = resolvedParams.slug;
+  
+  const response = await getBlogPostBySlug(slug);
+  
+  if (response.status !== 200 || !response.data) {
+    return {
+      title: "Blog Post Not Found",
+      description: "The requested blog post could not be found.",
+    };
+  }
+
+  const blog = response.data;
+  
+  return {
+    title: `${blog.title} | Shiftly.uk`,
+    description: blog.title,
+    openGraph: {
+      title: blog.title,
+      description: blog.title,
+      url: `https://shiftly.uk/articles/${slug}`,
+      images: blog.image && typeof blog.image === 'string' && blog.image.length > 0
+        ? [{ url: blog.image, width: 1200, height: 630, alt: blog.title }] 
+        : [{ url: '/placeholder.jpg', width: 1200, height: 630, alt: blog.title }],
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: blog.title,
+      description: blog.title,
+      images: blog.image && typeof blog.image === 'string' && blog.image.length > 0
+        ? [blog.image] 
+        : ['/placeholder.jpg'],
+    }
+  };
+}
 
 export default async function BlogPostPage(props: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
   // Await params before accessing properties
@@ -15,6 +57,7 @@ export default async function BlogPostPage(props: any) { // eslint-disable-line 
   }
   
   const blog = response.data;
+  const postUrl = `https://shiftly.uk/articles/${slug}`;
   
   return (
     <article className="container mx-auto px-4 py-12 max-w-4xl">
@@ -25,7 +68,11 @@ export default async function BlogPostPage(props: any) { // eslint-disable-line 
       {/* Header Image */}
       <div className="relative w-full h-96 mb-8">
         <Image
-          src={blog.image}
+          src={
+            blog.image && typeof blog.image === 'string' && blog.image.length > 0
+              ? blog.image
+              : '/placeholder.jpg' // Path to your placeholder in the public folder
+          }
           alt={blog.title}
           fill
           className="object-cover rounded-lg"
@@ -53,31 +100,19 @@ export default async function BlogPostPage(props: any) { // eslint-disable-line 
         {/* Add more meta info if available, like author or reading time */}
       </div>
       
-      {/* Content */}
-      <div className="prose prose-lg max-w-none">
-        <div
-          className="text-gray-800 leading-relaxed"
-          dangerouslySetInnerHTML={{ __html: blog.content ?? "" }}
-        />
+      
+      {/* Content - Apply prose classes here */}
+      <div className="prose prose-lg max-w-none text-sky-900">
+        <div dangerouslySetInnerHTML={{ __html: blog.content ?? "" }} />
       </div>
       
-      {/* Optional: Add a footer section */}
+      {/* Share section with functional buttons */}
       <div className="mt-12 pt-8 border-t border-gray-200">
         <div className="flex justify-between items-center">
           <div className="text-sm text-gray-600">
             Share this article:
           </div>
-          <div className="flex gap-4">
-            <button className="p-2 hover:bg-gray-100 rounded-full">
-              <span className="text-gray-600">Twitter</span>
-            </button>
-            <button className="p-2 hover:bg-gray-100 rounded-full">
-              <span className="text-gray-600">Facebook</span>
-            </button>
-            <button className="p-2 hover:bg-gray-100 rounded-full">
-              <span className="text-gray-600">LinkedIn</span>
-            </button>
-          </div>
+          <ShareButtons url={postUrl} title={blog.title} />
         </div>
       </div>
     </article>
