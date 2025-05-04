@@ -8,56 +8,56 @@ export const ourFileRouter = {
   doctorProfileImage: f({ image: { maxFileSize: "1MB" } }).onUploadComplete(
     async ({  file }) => {
       console.log("file url", file.url);
-      return { uploadedBy: "Shiftly" };
+      return { uploadedBy: "Shiftly UK" };
     }
   ),
   companyLogo: f({ image: { maxFileSize: "1MB" } }).onUploadComplete(
     async ({  file }) => {
       console.log("file url", file.url);
-      return { uploadedBy: "Shiftly" };
+      return { uploadedBy: "Shiftly UK" };
     }
   ),
   serviceImage: f({ image: { maxFileSize: "1MB" } }).onUploadComplete(
     async ({  file }) => {
       console.log("file url", file.url);
-      return { uploadedBy: "Shiftly" };
+      return { uploadedBy: "Shiftly UK" };
     }
   ),
   blogImage: f({ image: { maxFileSize: "1MB" } }).onUploadComplete(
     async ({  file }) => {
       console.log("file url", file.url);
-      return { uploadedBy: "Shiftly" };
+      return { uploadedBy: "Shiftly UK" };
     }
   ),
   doctorProfessionDocs: f({
     pdf: { maxFileSize: "4MB", maxFileCount: 4 },
   }).onUploadComplete(async ({  file }) => {
     console.log("file url", file.url);
-    return { uploadedBy: "Shiftly" };
+    return { uploadedBy: "Shiftly UK" };
   }),
   patientMedicalFiles: f({
     pdf: { maxFileSize: "4MB", maxFileCount: 4 },
   }).onUploadComplete(async ({  file }) => {
     console.log("file url", file.url);
-    return { uploadedBy: "Shiftly" };
+    return { uploadedBy: "Shiftly UK" };
   }),
   clientProofOfAddress: f({
     pdf: { maxFileSize: "4MB", maxFileCount: 2 },
   }).onUploadComplete(async ({  file }) => {
     console.log("file url", file.url);
-    return { uploadedBy: "Shiftly" };
+    return { uploadedBy: "Shiftly UK" };
   }),
   employersLiability: f({
     pdf: { maxFileSize: "4MB", maxFileCount: 2 },
   }).onUploadComplete(async ({  file }) => {
     console.log("file url", file.url);
-    return { uploadedBy: "Shiftly" };
+    return { uploadedBy: "Shiftly UK" };
   }),
   additionalDocs: f({
     pdf: { maxFileSize: "16MB", maxFileCount: 4 },
   }).onUploadComplete(async ({  file }) => {
     console.log("file url", file.url);
-    return { uploadedBy: "Shiftly" };
+    return { uploadedBy: "Shiftly UK" };
   }),
 } satisfies FileRouter;
 

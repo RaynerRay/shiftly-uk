@@ -26,7 +26,7 @@ export default function UserTypeSelection() {
 
   return (
     <div className="min-h-screen bg-neutral-50 dark:bg-neutral-900 flex flex-col items-center justify-center p-6">
-      <div className="w-full max-w-3xl">
+      <div className="w-full max-w-7xl">
         <div className="mb-8">
           <Link href="/" className="flex items-center group">
             <div className="text-sky-500 dark:text-neutral-300 text-4xl mr-3 group-hover:text-sky-700 transition-colors duration-200">
@@ -56,11 +56,11 @@ export default function UserTypeSelection() {
             Get started
           </h1>
           <p className="text-lg text-neutral-600 dark:text-neutral-400">
-            Choose one of three user types
+            Choose one of three user types or resume your application
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {/* Company Client Option */}
           <div
             className={`border rounded-xl p-6 flex flex-col items-center justify-center cursor-pointer transition-all duration-200 ${
@@ -81,7 +81,7 @@ export default function UserTypeSelection() {
             </p>
             <div className="mt-2 text-sm text-neutral-500 dark:text-neutral-400 text-center">
               <p>Please prepare to upload the following scanned document:</p>
-              <ul className="list-disc list-inside">
+              <ul className="list-disc list-inside text-sky-900">
                 <li>Certificate of Employer&#39;s Liability</li>
               </ul>
             </div>
@@ -140,7 +140,7 @@ export default function UserTypeSelection() {
             </p>
             <div className="mt-2 text-sm text-neutral-500 dark:text-neutral-400 text-center">
               <p>Please prepare to upload the following scanned document:</p>
-              <ul className="list-disc list-inside">
+              <ul className="list-disc list-inside text-sky-900">
                 <li>Proof of address (e.g., your latest utility bill)</li>
               </ul>
             </div>
@@ -231,6 +231,28 @@ export default function UserTypeSelection() {
               </label>
             </div>
           </div>
+          <Link
+          href={"/onboarding/resume"}
+            className="border rounded-xl p-6 flex flex-col items-center justify-center cursor-pointer transition-all duration-200 "
+          >
+            <div className="mb-6 p-3 rounded-full bg-neutral-100 dark:bg-neutral-800">
+              <Users className="w-12 h-12 text-sky-500" />
+            </div>
+            <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-100 mb-2">
+            Resume your application
+            </h2>
+            <p className="text-neutral-600 dark:text-neutral-400 text-center">
+            
+   
+             Pick up where you left off and complete your onboarding process.
+  
+            </p>
+            <div className="mt-4">
+              
+              
+              
+            </div>
+          </Link>
         </div>
 
         <div className="mt-10 flex justify-center">

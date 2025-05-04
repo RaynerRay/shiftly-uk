@@ -41,7 +41,7 @@ const Navbar = ({ session }: { session: Session | null }) => {
     <>
       <div className="w-full fixed top-0 left-0 z-50">
       {/* Top bar */}
-      <div className={`bg-gradient-to-r from-sky-600 to-blue-700 transition-all duration-300 ${scrolled ? 'opacity-95' : 'opacity-100'}`}>
+      <div className={`bg-gradient-to-r from-sky-600 to-sky-700 transition-all duration-300 ${scrolled ? 'opacity-95' : 'opacity-100'}`}>
         <div className="max-w-7xl mx-auto hidden md:flex w-full py-2 px-4 justify-between items-center">
           <div className="flex items-center">
             <Mail className="w-4 h-4 mr-2 text-white" />
@@ -70,40 +70,40 @@ const Navbar = ({ session }: { session: Session | null }) => {
             <div className="flex items-center">
               <Link href="/" className="flex items-center group">
                 <div className="relative">
-                  <div className="text-sky-800 text-3xl group-hover:text-blue-600 transition-colors">
+                  <div className="text-sky-800 text-3xl group-hover:text-sky-600 transition-colors">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
                       <path d="M8 12h8" />
                       <path d="M12 8v8" />
                     </svg>
                   </div>
-                  <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-blue-600 rounded-full hidden group-hover:block" />
+                  <div className="absolute -bottom-1 -right-1 w-3 h-3 bg-sky-600 rounded-full hidden group-hover:block" />
                 </div>
-                <span className="text-xl ml-2 text-sky-900 font-bold tracking-tight group-hover:text-blue-600 transition-colors">SHIFTLY</span>
+                <span className="text-xl ml-2 text-sky-900 font-bold tracking-tight group-hover:text-sky-600 transition-colors">SHIFTLY</span>
               </Link>
             </div>
 
             {/* Desktop menu */}
             <div className="hidden md:flex items-center space-x-6 font-medium">
-              <Link href="/" className="text-sky-950 hover:text-blue-600 transition-colors relative group py-2">
+              <Link href="/" className="text-sky-950 hover:text-sky-600 transition-colors relative group py-2">
                 Home
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-sky-600 group-hover:w-full transition-all duration-300"></span>
               </Link>
-              <Link href="/about" className="text-sky-950 hover:text-blue-600 transition-colors relative group py-2">
+              <Link href="/about" className="text-sky-950 hover:text-sky-600 transition-colors relative group py-2">
                 About
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-sky-600 group-hover:w-full transition-all duration-300"></span>
               </Link>
-              <Link href="/howitworks" className="text-sky-950 hover:text-blue-600 transition-colors relative group py-2">
+              <Link href="/howitworks" className="text-sky-950 hover:text-sky-600 transition-colors relative group py-2">
                 How It Works
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-sky-600 group-hover:w-full transition-all duration-300"></span>
               </Link>
-              <Link href="/articles" className="text-sky-950 hover:text-blue-600 transition-colors relative group py-2">
+              <Link href="/articles" className="text-sky-950 hover:text-sky-600 transition-colors relative group py-2">
                 Articles
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-sky-600 group-hover:w-full transition-all duration-300"></span>
               </Link>
-              <Link href="/contact" className="text-sky-950 hover:text-blue-600 transition-colors relative group py-2">
+              <Link href="/contact" className="text-sky-950 hover:text-sky-600 transition-colors relative group py-2">
                 Contact
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 group-hover:w-full transition-all duration-300"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-sky-600 group-hover:w-full transition-all duration-300"></span>
               </Link>
             </div>
 
@@ -117,7 +117,7 @@ const Navbar = ({ session }: { session: Session | null }) => {
                         {user.image ? (
                           <AvatarImage src={user.image} alt={user.name || ''} />
                         ) : (
-                          <AvatarFallback className='bg-gradient-to-br from-blue-500 to-sky-500 text-white'>{initials}</AvatarFallback>
+                          <AvatarFallback className='bg-gradient-to-br from-sky-500 to-sky-500 text-white'>{initials}</AvatarFallback>
                         )}
                       </Avatar>
                       <span className="ml-2 font-medium text-gray-700">{user.name?.split(' ')[0]}</span>
@@ -131,24 +131,24 @@ const Navbar = ({ session }: { session: Session | null }) => {
                     </DropdownMenuLabel>
                     <DropdownMenuItem className="cursor-pointer hover:bg-gray-100 rounded mt-2">
                       <Link href="/dashboard" className="flex items-center w-full py-1">
-                        <span className="bg-blue-100 p-1 rounded mr-2">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-600"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect><line x1="3" x2="21" y1="9" y2="9"></line><line x1="9" x2="9" y1="21" y2="9"></line></svg>
+                        <span className="bg-sky-100 p-1 rounded mr-2">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-sky-600"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect><line x1="3" x2="21" y1="9" y2="9"></line><line x1="9" x2="9" y1="21" y2="9"></line></svg>
                         </span>
                         Dashboard
                       </Link>
                     </DropdownMenuItem>
                     {/* <DropdownMenuItem className="cursor-pointer hover:bg-gray-100 rounded">
                       <Link href="/profile" className="flex items-center w-full py-1">
-                        <span className="bg-blue-100 p-1 rounded mr-2">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-600"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        <span className="bg-sky-100 p-1 rounded mr-2">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-sky-600"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                         </span>
                         Profile
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem className="cursor-pointer hover:bg-gray-100 rounded">
                       <Link href="/settings" className="flex items-center w-full py-1">
-                        <span className="bg-blue-100 p-1 rounded mr-2">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-blue-600"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        <span className="bg-sky-100 p-1 rounded mr-2">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-sky-600"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                         </span>
                         Settings
                       </Link>
@@ -169,7 +169,7 @@ const Navbar = ({ session }: { session: Session | null }) => {
                   <Link href="/login" className="bg-gray-100 text-sky-900 px-5 py-2 rounded-full hover:bg-gray-200 transition-colors flex items-center font-medium">
                     <LogIn className="mr-2 h-4 w-4" /> Login
                   </Link>
-                  <Link href="/register" className="bg-gradient-to-r from-blue-600 to-sky-600 text-white px-5 py-2 rounded-full hover:from-blue-700 hover:to-sky-700 transition-colors flex items-center font-medium shadow-md hover:shadow-lg">
+                  <Link href="/register" className="bg-gradient-to-r from-sky-600 to-sky-600 text-white px-5 py-2 rounded-full hover:from-sky-700 hover:to-sky-700 transition-colors flex items-center font-medium shadow-md hover:shadow-lg">
                     <UserPlus className="mr-2 h-4 w-4" /> Sign Up
                   </Link>
                 </div>
@@ -180,7 +180,7 @@ const Navbar = ({ session }: { session: Session | null }) => {
             <div className="md:hidden">
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="text-sky-900 hover:text-blue-600 focus:outline-none transition-colors"
+                className="text-sky-900 hover:text-sky-600 focus:outline-none transition-colors"
               >
                 {isOpen ? (
                   <X className="h-6 w-6" />
@@ -195,29 +195,29 @@ const Navbar = ({ session }: { session: Session | null }) => {
           {isOpen && (
             <div className="md:hidden bg-white rounded-lg shadow-lg mt-2 p-4 transition-all duration-300 border-t border-gray-100">
               <div className="space-y-2">
-                <Link href="/" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sky-950 hover:bg-blue-50 hover:text-blue-600 rounded-md transition-colors">
+                <Link href="/" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sky-950 hover:bg-sky-50 hover:text-sky-600 rounded-md transition-colors">
                   Home
                 </Link>
-                <Link href="/about" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sky-950 hover:bg-blue-50 hover:text-blue-600 rounded-md transition-colors">
+                <Link href="/about" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sky-950 hover:bg-sky-50 hover:text-sky-600 rounded-md transition-colors">
                   About
                 </Link>
-                <Link href="/howitworks" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sky-950 hover:bg-blue-50 hover:text-blue-600 rounded-md transition-colors">
+                <Link href="/howitworks" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sky-950 hover:bg-sky-50 hover:text-sky-600 rounded-md transition-colors">
                   How It Works
                 </Link>
-                <Link href="/join/professionals" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sky-950 hover:bg-blue-50 hover:text-blue-600 rounded-md transition-colors">
+                <Link href="/join/professionals" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sky-950 hover:bg-sky-50 hover:text-sky-600 rounded-md transition-colors">
                   Join as Professional
                 </Link>
-                <Link href="/articles" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sky-950 hover:bg-blue-50 hover:text-blue-600 rounded-md transition-colors">
+                <Link href="/articles" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sky-950 hover:bg-sky-50 hover:text-sky-600 rounded-md transition-colors">
                   Articles
                 </Link>
-                <Link href="/contact" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sky-950 hover:bg-blue-50 hover:text-blue-600 rounded-md transition-colors">
+                <Link href="/contact" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sky-950 hover:bg-sky-50 hover:text-sky-600 rounded-md transition-colors">
                   Contact
                 </Link>
                 
                 <div className="px-3 py-3 bg-gray-50 rounded-lg mt-2">
                   <div className="flex items-center">
-                    <div className="bg-blue-100 p-2 rounded-full">
-                      <Phone className="w-4 h-4 text-blue-600" />
+                    <div className="bg-sky-100 p-2 rounded-full">
+                      <Phone className="w-4 h-4 text-sky-600" />
                     </div>
                     <div className="ml-3">
                       <div className="text-xs text-gray-500">Call us:</div>
@@ -232,7 +232,7 @@ const Navbar = ({ session }: { session: Session | null }) => {
                           {user.image ? (
                             <AvatarImage src={user.image} alt={user.name || ''} />
                           ) : (
-                            <AvatarFallback className='bg-gradient-to-br from-blue-500 to-sky-500 text-white'>{initials}</AvatarFallback>
+                            <AvatarFallback className='bg-gradient-to-br from-sky-500 to-sky-500 text-white'>{initials}</AvatarFallback>
                           )}
                         </Avatar>
                         <div>
@@ -253,7 +253,7 @@ const Navbar = ({ session }: { session: Session | null }) => {
                           setIsOpen(false);
                           handleLogout();
                         }}
-                        className="w-full mt-2 bg-gradient-to-r from-blue-600 to-sky-600 text-white px-4 py-2 rounded-md hover:from-blue-700 hover:to-sky-700 transition-colors"
+                        className="w-full mt-2 bg-gradient-to-r from-sky-600 to-sky-600 text-white px-4 py-2 rounded-md hover:from-sky-700 hover:to-sky-700 transition-colors"
                       >
                         Logout
                       </button>
@@ -263,7 +263,7 @@ const Navbar = ({ session }: { session: Session | null }) => {
                       <Link href="/login" onClick={() => setIsOpen(false)} className="text-center bg-gray-100 text-sky-900 px-4 py-2 rounded-md hover:bg-gray-200 transition-colors flex items-center justify-center">
                         <LogIn className="mr-2 h-4 w-4" /> Login
                       </Link>
-                      <Link href="/register" onClick={() => setIsOpen(false)} className="text-center bg-gradient-to-r from-blue-600 to-sky-600 text-white px-4 py-2 rounded-md hover:from-blue-700 hover:to-sky-700 transition-colors flex items-center justify-center">
+                      <Link href="/register" onClick={() => setIsOpen(false)} className="text-center bg-gradient-to-r from-sky-600 to-sky-600 text-white px-4 py-2 rounded-md hover:from-sky-700 hover:to-sky-700 transition-colors flex items-center justify-center">
                         <UserPlus className="mr-2 h-4 w-4" /> Sign Up
                       </Link>
                     </div>

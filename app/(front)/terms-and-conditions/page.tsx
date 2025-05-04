@@ -98,7 +98,7 @@ const TermsAndConditionsComponent = () => {
       id: 'commencement-term',
       title: '1. Commencement and Term',
       content: [
-        'Save for where the Client has entered into a signed Newcross issued Agreement, these terms shall set out the agreement between Newcross and the Client, for the supply of Temporary Workers by Newcross to the Client. For the purposes of the Conduct Regulations 2003, Newcross acts as an employment business in relation to the Introduction and supply of Temporary Workers pursuant to this agreement.'
+        'Save for where the Client has entered into a signed Shiftly issued Agreement, these terms shall set out the agreement between Shiftly and the Client, for the supply of Temporary Workers by Shiftly to the Client. For the purposes of the Conduct Regulations 2003, Shiftly acts as an employment business in relation to the Introduction and supply of Temporary Workers pursuant to this agreement.'
       ]
     },
     {
@@ -132,7 +132,7 @@ const TermsAndConditionsComponent = () => {
         '4.2 Your Rates Link will set out any discount to invoices that you may earn from time to time subject to achieving certain milestones in relation to booking hours. Agency reserves the right to disapply any such discount where Client fails to adhere to the payment terms as set out in clause 4.6.',
         '4.3 Agency will submit its invoice to the Client in respect of the Service Fees and any Expenses weekly in arrears or such longer period at the Agencys sole discretion.',
         '4.4 Unless specifically otherwise agreed between the parties in writing, the Agency does not agree to submit any details of shifts worked by Workers on to any systems operated by the Client directly or by third parties on behalf of the Client in order to receive payment.',
-        '4.5 Agency will submit invoices to the Client via email unless the Client has notified Agency that it wishes to access invoices online through the Agency online invoicing system ("Shiftly"). To the extent that MyNewcross is or becomes unavailable at any time, Agency shall be entitled at its discretion to submit invoices to affected Client by email.',
+        '4.5 Agency will submit invoices to the Client via email unless the Client has notified Agency that it wishes to access invoices online through the Agency online invoicing system ("Shiftly"). To the extent that Shiftly is or becomes unavailable at any time, Agency shall be entitled at its discretion to submit invoices to affected Client by email.',
         '4.6 The payment of the Service Fees, national insurance, travel and other expenses will be made by the Client to the Agency within 28 days of the date of the Agencys invoice in respect of the amounts specified in the invoice. Time shall be of the essence in relation to payment of the Service Fees.',
         '4.7 The Client shall pay by bank transfer or faster payment to a bank account nominated in writing (or as set out in the invoice) by Agency.',
         '4.8 All amounts stated are exclusive of VAT and any other applicable taxes, which will if applicable be charged in addition at the rate in force at the time the services are provided.',

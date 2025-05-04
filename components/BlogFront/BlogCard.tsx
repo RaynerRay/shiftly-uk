@@ -9,7 +9,11 @@ export default function BlogCard({ blog }: { blog: BlogPostProps }) {
     <div className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
       <Link href={`/articles/${blog.slug}`}>
         <Image
-          src={blog.image}
+         src={
+          blog.image && typeof blog.image === 'string' && blog.image.length > 0
+            ? blog.image
+            : '/placeholder.jpg' // Path to your placeholder in the public folder
+        }
           alt={blog.title}
           className="w-full object-cover h-56"
           width={600}

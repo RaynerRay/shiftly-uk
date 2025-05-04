@@ -18,6 +18,9 @@
   @apply border-l-4 border-blue-500 pl-4 italic text-gray-700;
 }
 
+@import "uploadthing/tw/v4";
+@source "../node_modules/@uploadthing/react/dist"; /** <-- depends on your project structure */
+
 
 @theme inline {
   --color-background: var(--background);

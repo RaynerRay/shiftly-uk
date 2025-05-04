@@ -47,7 +47,7 @@ export default function About() {
           </ul>
 
           {/* Button */}
-          <Link href="/join/professionals">
+          <Link href="/register">
           <button className="mt-4 px-6 py-3 bg-sky-500 text-white font-semibold rounded-lg hover:bg-sky-600 transition">
             Join Our Network
           </button>

@@ -54,7 +54,7 @@ export default function UpdateAppointmentCompletionForm({
   // Watch the start and end time fields to calculate the hours
   const actualStartTime = watch("actualStartTime");
   const actualFinishTime = watch("actualFinishTime");
-  const actualHours = watch("actualHours");
+  // const actualHours = watch("actualHours");
   
   // Calculate actual hours and final charge whenever start or end time changes
   useEffect(() => {
@@ -126,16 +126,7 @@ export default function UpdateAppointmentCompletionForm({
           <h2 className="scroll-m-20 text-lg sm:text-xl font-semibold tracking-tight py-2 mb-2 sm:mb-3">
             Appointment Completion Status
           </h2>
-          <Button
-            className="w-full sm:w-auto mb-3 sm:mb-0"
-            disabled={loading || !canUpdate}
-          >
-            {loading
-              ? "Saving..."
-              : !canUpdate
-              ? "Cannot Update"
-              : "Update Completion Status"}
-          </Button>
+          
         </div>
         
         {!canUpdate && (
@@ -151,17 +142,18 @@ export default function UpdateAppointmentCompletionForm({
         )}
         
         <div className="mt-4">
-          <div className="py-2">
-            <label className="flex items-center">
-              <input
-                type="checkbox"
-                {...register("isCompleted")}
-                disabled={!canUpdate}
-                className="mr-2"
-              />
-              <span>Completed</span>
-            </label>
-          </div>
+        <div className="py-2">
+  <label className="flex items-center space-x-3 cursor-pointer">
+    <input
+      type="checkbox"
+      {...register("isCompleted")}
+      disabled={!canUpdate}
+      className="w-5 h-5 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
+    />
+    <span className="text-lg font-medium text-gray-800">Completed</span>
+  </label>
+</div>
+
           
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
             <div>
@@ -207,7 +199,7 @@ export default function UpdateAppointmentCompletionForm({
               </p>
             </div>
             
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Final Charge (£)
               </label>
@@ -221,20 +213,31 @@ export default function UpdateAppointmentCompletionForm({
               <p className="text-xs text-gray-500 mt-1">
                 Based on greater of actual hours ({actualHours || 0}) or scheduled hours ({totalHours})
               </p>
-            </div>
+            </div> */}
+            
           </div>
           
           <div className="mt-4 pt-3 border-t">
-            <div className="flex flex-col sm:flex-row gap-3">
-              <div className="text-sm">
+            <div className="flex flex-col sm:flex-row gap-3 justify-between">
+              {/* <div className="text-sm">
                 <strong>Hourly Rate:</strong> £{hourlyRate}
-              </div>
+              </div> */}
               <div className="text-sm">
                 <strong>Scheduled Hours:</strong> {totalHours}
               </div>
-              <div className="text-sm">
+              {/* <div className="text-sm">
                 <strong>Original Charge:</strong> £{appointment.charge}
-              </div>
+              </div> */}
+              <Button
+            className="w-full sm:w-auto mb-3 sm:mb-0 bg-sky-900"
+            disabled={loading || !canUpdate}
+          >
+            {loading
+              ? "Saving..."
+              : !canUpdate
+              ? "Cannot Update"
+              : "Update Completion Status"}
+          </Button>
             </div>
           </div>
         </div>

@@ -38,18 +38,17 @@ export default function BlogForm({
     { value: "diseases-treatments", label: "Diseases & Treatments" },
     { value: "digital-health", label: "Telemedicine & Digital Health" },
     { value: "social-care-public-health", label: "Social Care & Public Health" },
-    { value: "digital-health-telemedicine", label: "Digital Health & Telemedicine" },
     { value: "health-technology-innovation", label: "Health Technology & Innovation" },
     { value: "patient-wellness-self-care", label: "Patient Wellness & Self-care" },
     { value: "mental-health-wellbeing", label: "Mental Health & Wellbeing" },
-    { value: "chronic-condition-management", label: "Chronic Condition Management" },
+    { value: "chronic-condition-management", label: "Chronic Conditions" },
     { value: "elderly-dementia-care", label: "Elderly & Dementia Care" },
-    { value: "caregiver-support", label: "Caregiver Tips & Support" },
+    { value: "caregiver-support", label: "Caregivers" },
     { value: "primary-care-gp-clinics", label: "Primary Care & GP Clinics" },
     { value: "clinical-best-practices", label: "Clinical Best Practices" },
     { value: "patient-stories-case-studies", label: "Patient Stories & Case Studies" },
     { value: "emergency-care", label: "Emergency & First Aid" },
-    { value: "general", label: "General Healthcare Topics" }
+    { value: "general", label: "General Healthcare" }
   ];
   
   
