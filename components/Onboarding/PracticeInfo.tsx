@@ -126,7 +126,7 @@ export default function PracticeInfo({
     )}
     {selectedHourlyWage && (
       <p className="text-sm text-gray-500 mt-2">
-        {/* Hourly rate: <span className="font-medium text-sky-600">£{selectedHourlyWage}/hr</span> */}
+        Hourly rate: <span className="font-medium text-sky-600">£{selectedHourlyWage}/hr</span>
       </p>
     )}
   </div>
