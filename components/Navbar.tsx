@@ -93,8 +93,8 @@ const Navbar = ({ session }: { session: Session | null }) => {
                 About
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-sky-600 group-hover:w-full transition-all duration-300"></span>
               </Link>
-              <Link href="/howitworks" className="text-sky-950 hover:text-sky-600 transition-colors relative group py-2">
-                How It Works
+              <Link href="/services" className="text-sky-950 hover:text-sky-600 transition-colors relative group py-2">
+                Services
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-sky-600 group-hover:w-full transition-all duration-300"></span>
               </Link>
               <Link href="/articles" className="text-sky-950 hover:text-sky-600 transition-colors relative group py-2">
@@ -201,8 +201,8 @@ const Navbar = ({ session }: { session: Session | null }) => {
                 <Link href="/about" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sky-950 hover:bg-sky-50 hover:text-sky-600 rounded-md transition-colors">
                   About
                 </Link>
-                <Link href="/howitworks" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sky-950 hover:bg-sky-50 hover:text-sky-600 rounded-md transition-colors">
-                  How It Works
+                <Link href="/services" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sky-950 hover:bg-sky-50 hover:text-sky-600 rounded-md transition-colors">
+                  Services
                 </Link>
                 <Link href="/join/professionals" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sky-950 hover:bg-sky-50 hover:text-sky-600 rounded-md transition-colors">
                   Join as Professional
