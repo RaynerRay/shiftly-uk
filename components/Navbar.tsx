@@ -204,8 +204,8 @@ const Navbar = ({ session }: { session: Session | null }) => {
                 <Link href="/services" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sky-950 hover:bg-sky-50 hover:text-sky-600 rounded-md transition-colors">
                   Services
                 </Link>
-                <Link href="/join/professionals" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sky-950 hover:bg-sky-50 hover:text-sky-600 rounded-md transition-colors">
-                  Join as Professional
+                <Link href="/register" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sky-950 hover:bg-sky-50 hover:text-sky-600 rounded-md transition-colors">
+                  Join
                 </Link>
                 <Link href="/articles" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-sky-950 hover:bg-sky-50 hover:text-sky-600 rounded-md transition-colors">
                   Articles

@@ -63,26 +63,26 @@ export default async function DoctorDashboard({
           Welcome, {user?.name}
         </h1>
         <div className="flex items-center space-x-3">
-          <button
-            className={cn(
-              "py-2 px-3 rounded-md text-xs flex items-center space-x-2",
-              status === "APPROVED"
-                ? "bg-green-500 text-white"
-                : status === "PENDING"
-                ? "bg-orange-400"
-                : "bg-red-500 text-white"
-            )}
-          >
-            {status === "APPROVED" ? (
-              <Check />
-            ) : status === "PENDING" ? (
-              <RefreshCcw />
-            ) : (
-              <X />
-            )}
+        <button
+  className={cn(
+    "py-2 px-3 sm:px-4 sm:py-2 rounded-md text-xs sm:text-sm flex items-center space-x-1 sm:space-x-2",
+    status === "APPROVED"
+      ? "bg-green-500 text-white"
+      : status === "PENDING"
+      ? "bg-orange-400 text-white"
+      : "bg-red-500 text-white"
+  )}
+>
+  {status === "APPROVED" ? (
+    <Check className="h-4 w-4 sm:h-5 sm:w-5" />
+  ) : status === "PENDING" ? (
+    <RefreshCcw className="h-4 w-4 sm:h-5 sm:w-5" />
+  ) : (
+    <X className="h-4 w-4 sm:h-5 sm:w-5" />
+  )}
 
-            {status}
-          </button>
+  <span className="truncate">{status}</span>
+</button>
         </div>
       </div>
       

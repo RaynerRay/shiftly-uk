@@ -2,31 +2,29 @@ import {
   createAvailability,
   updateAvailabilityById,
 } from "@/actions/onboarding";
-// import SubmitButton from "@/components/FormInputs/SubmitButton";
-// import { Button } from "@/components/ui/button";
-// import { DoctorProfile } from "@prisma/client";
-// import { Loader, Plus, X } from "lucide-react";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import SelectedTimes from "./SelectedTimes";
 import { timesArray } from "@/config/constants";
-import { prismaClient } from "@/lib/db";
 
 export default function Tuesday({
   profile,
   day,
 }: {
-  profile: any; // eslint-disable-line
+  profile: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   day: string;
 }) {
-  const availability = profile?.availability || "";
-  let initialData: string[] = ["7:00 AM"];
+  // Create lowercase day name for database field (monday, tuesday, etc.)
+  const dayField = day.toLowerCase();
+  
+  let initialData: string[] = [];
   if (profile && profile?.availability) {
-    initialData = profile?.availability[day] || [];
+    initialData = profile?.availability[dayField] || [];
   }
+  const availability = profile?.availability || "";
 
-  const [selectedTimes, setSelectedTimes] = useState<string[]>(initialData);
-  // console.log(selectedTimes);
+  const [selectedTimes, setSelectedTimes] = useState(initialData);
+  
   function handleAddTime(time: string) {
     if (!selectedTimes.includes(time)) {
       setSelectedTimes((prevTimes) => [...prevTimes, time]);
@@ -34,67 +32,53 @@ export default function Tuesday({
       toast.error(`${time} already added!`);
     }
   }
-  function handleAddAll() {
-    setSelectedTimes([...timesArray]);
-  }
-  function clearAll() {
-    setSelectedTimes([]);
-  }
-  async function handleSubmit() {
-    setLoading(true);
-    try {
-      if (profile?.id && availability?.id) {
-        // If availability already exists, update it
-        const data = {
-          tuesday: selectedTimes,
-          doctorProfileId: profile.id,
-        };
-        await updateAvailabilityById(availability?.id, data);
-        setLoading(false);
-        toast.success("Settings Updated Successfully");
-      } else if (profile?.id) {
-        // Check if availability exists for this doctorProfileId
-        const existingAvailability = await prismaClient.availability.findUnique({
-          where: {
-            doctorProfileId: profile.id,
-          },
-        });
-  
-        if (existingAvailability) {
-          // If found, update it
-          const data = {
-            tuesday: selectedTimes,
-            doctorProfileId: profile.id,
-          };
-          await updateAvailabilityById(existingAvailability.id, data);
-          setLoading(false);
-          toast.success("Settings Updated Successfully");
-        } else {
-          // If not found, create new
-          const data = {
-            tuesday: selectedTimes,
-            doctorProfileId: profile.id,
-          };
-          await createAvailability(data);
-          setLoading(false);
-          toast.success("Settings Updated Successfully");
-        }
-      } else {
-        // console.log("Profile id Not set");
-        setLoading(false);
-      }
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-      toast.error("Something went wrong");
-    }
-  }
   
   function handleRemoveTime(index: number) {
     const updatedTimes = selectedTimes.filter((_, i) => i !== index);
     setSelectedTimes(updatedTimes);
   }
+  
+  function handleAddAll() {
+    setSelectedTimes([...timesArray]);
+  }
+  
+  function clearAll() {
+    setSelectedTimes([]);
+  }
+  
   const [loading, setLoading] = useState(false);
+  
+  async function handleSubmit() {
+    if (!profile?.id) {
+      toast.error("Profile not found");
+      return;
+    }
+    
+    setLoading(true);
+    try {
+      // Create a data object with the dynamic day field
+      const data = {
+        [dayField]: selectedTimes,
+        doctorProfileId: profile.id,
+      };
+      
+      if (profile?.id && availability?.id) {
+        // Update existing availability
+        await updateAvailabilityById(availability?.id, data);
+        toast.success("Settings Updated Successfully");
+      } else if (profile?.id) {
+        // Create new availability
+        await createAvailability(data);
+        toast.success("Settings Created Successfully");
+      }
+    } catch (error) {
+      console.error("Error saving availability:", error);
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
+  
   return (
     <SelectedTimes
       handleAddAll={handleAddAll}
