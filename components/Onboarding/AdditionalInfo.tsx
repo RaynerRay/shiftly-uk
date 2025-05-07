@@ -26,9 +26,17 @@ export default function AdditionalInfo({
       url: item,
     };
   });
+  const initialDbs = doctorProfile.dbs.map((item) => {
+    return {
+      title: item,
+      size: 0,
+      url: item,
+    };
+  });
   const isOnboarding = pathname.split("/").includes("onboarding");
   const [isLoading, setIsLoading] = useState(false);
   const [additionalDocs, setAdditionalDocs] = useState<FileProps[]>(initialDocs);
+  const [dbs, setDbs] = useState<FileProps[]>(initialDbs);
 
   const {
     register,
@@ -36,7 +44,7 @@ export default function AdditionalInfo({
     formState: { errors },
   } = useForm<additionalFormProps>({
     defaultValues: {
-      accomplishments: doctorProfile.accomplishments || savedDBData.accomplishments,
+      rightToWork: doctorProfile.rightToWork || savedDBData.rightToWork,
       page: doctorProfile.page || savedDBData.page,
     },
   });
@@ -46,6 +54,7 @@ export default function AdditionalInfo({
   async function onSubmit(data: additionalFormProps) {
     data.page = page;
     data.additionalDocs = additionalDocs.map((doc: any) => doc.url); // eslint-disable-line @typescript-eslint/no-explicit-any
+    data.dbs = dbs.map((doc: any) => doc.url); // eslint-disable-line @typescript-eslint/no-explicit-any
 
     setIsLoading(true);
     try {
@@ -90,11 +99,11 @@ export default function AdditionalInfo({
       <form className="py-8 px-6 space-y-8" onSubmit={handleSubmit(onSubmit)}>
         <div className="space-y-6">
           <TextAreaInput
-            label="Special Accomplishments or Awards"
+            label="Share Code"
             register={register}
-            name="accomplishments"
+            name="rightToWork"
             errors={errors}
-            placeholder="Enter any special accomplishments or awards you've received"
+            placeholder="Enter Your Right to Work Share Code"
             required={false}
           />
           
@@ -111,7 +120,7 @@ export default function AdditionalInfo({
               
               <div className="p-4 border border-green-200 bg-green-50 rounded-md dark:bg-green-900/20 dark:border-green-800">
                 <h4 className="font-medium text-green-900 dark:text-green-300 mb-1">Social Workers</h4>
-                <p className="text-sm text-green-700 dark:text-green-400">Upload Social Worker Certificate & Disclosure and Barring Service certificate (DBS)</p>
+                <p className="text-sm text-green-700 dark:text-green-400">Upload Social Worker Certificate </p>
               </div>
               
               <div className="p-4 border border-yellow-200 bg-yellow-50 rounded-md dark:bg-yellow-900/20 dark:border-yellow-800">
@@ -121,16 +130,26 @@ export default function AdditionalInfo({
             </div>
             
             <div className="mt-6 pt-6 border-t border-gray-200 dark:border-slate-600">
-              <div className="bg-red-50 p-4 rounded-md border-l-4 border-red-500 dark:bg-red-900/20 dark:border-red-800 mb-4">
-                <h4 className="font-medium text-red-900 dark:text-red-300 mb-1">Required for All Professionals</h4>
-                <p className="text-sm text-red-700 dark:text-red-400">Right To Work & Criminal Record documents</p>
-              </div>
+              
               
               <MultipleFileUpload
                 label="Upload Required Documents"
                 files={additionalDocs as any} // eslint-disable-line @typescript-eslint/no-explicit-any
                 setFiles={setAdditionalDocs}
                 endpoint="additionalDocs"
+              />
+              </div>
+            <div className="mt-6 pt-6 border-t border-gray-200 dark:border-slate-600">
+              <div className="bg-red-50 p-4 rounded-md border-l-4 border-red-500 dark:bg-red-900/20 dark:border-red-800 mb-4">
+                <h4 className="font-medium text-red-900 dark:text-red-300 mb-1">Required for All Professionals</h4>
+                <p className="text-sm text-red-700 dark:text-red-400"> Disclosure and Barring Service certificate (DBS) </p>
+              </div>
+              
+              <MultipleFileUpload
+                label="Upload DBS certificate"
+                files={dbs as any} // eslint-disable-line @typescript-eslint/no-explicit-any
+                setFiles={setDbs}
+                endpoint="dbs"
               />
             </div>
           </div>

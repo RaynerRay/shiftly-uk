@@ -100,8 +100,9 @@ export type PracticeFormProps = {
 export type additionalFormProps = {
   // educationHistory: string;
   // research: string;
-  accomplishments: string;
+  rightToWork: string;
   additionalDocs: any;
+  dbs: any;
   page: string;
 };
 export type stats = {

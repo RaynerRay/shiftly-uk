@@ -135,11 +135,13 @@ model DoctorProfile {
   boardCertificates String[]
   servicesOffered   String[]
   accomplishments   String?
+  rightToWork   String?
   refereeEmail      String?
   refereeName       String?
   refereeNumber     String?
 
   additionalDocs String[]
+  dbs String[]
   operationMode  String?  @default("Telehealth visit")
   hourlyWage     Int      @default(15)
 

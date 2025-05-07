@@ -250,13 +250,51 @@ export async function deleteBlogPost(id: string) {
     }
   }
   
+// Improved getBlogPostBySlug function with better error handling
 export async function getBlogPostBySlug(slug: string) {
   try {
-    const blogPost = await prismaClient.blogPost.findUnique({
+    if (!slug || typeof slug !== 'string') {
+      console.error("Invalid slug provided:", slug);
+      return {
+        data: null,
+        status: 400,
+        error: "Invalid slug parameter",
+      };
+    }
+
+    // Add timeout to prevent hanging requests in production
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(() => reject(new Error("Database query timeout")), 10000);
+    });
+
+    // Actual database query
+    const queryPromise = prismaClient.blogPost.findUnique({
       where: {
         slug,
       },
     });
+
+    // Race the database query against the timeout
+    const blogPost = await Promise.race([queryPromise, timeoutPromise]) as any;
+
+    if (!blogPost) {
+      console.log(`Blog post with slug "${slug}" not found`);
+      return {
+        data: null,
+        status: 404,
+        error: "Blog post not found",
+      };
+    }
+
+    // Ensure categories is an array
+    if (!blogPost.categories || !Array.isArray(blogPost.categories)) {
+      blogPost.categories = [];
+    }
+
+    // Format dates for consistent output
+    if (blogPost.publishedAt) {
+      blogPost.publishedAt = new Date(blogPost.publishedAt).toISOString();
+    }
 
     return {
       data: blogPost,
@@ -264,11 +302,11 @@ export async function getBlogPostBySlug(slug: string) {
       error: null,
     };
   } catch (error) {
-    console.log(error);
+    console.error("Error fetching blog post:", error);
     return {
       data: null,
       status: 500,
-      error,
+      error: error instanceof Error ? error.message : String(error),
     };
   }
 }

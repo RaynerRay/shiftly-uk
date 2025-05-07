@@ -139,8 +139,9 @@ const initialPracticeData: PracticeFormProps = {
 const initialAdditionalData: additionalFormProps = {
   // educationHistory: "",
   // research: "",
-  accomplishments: "",
+  rightToWork: "",
   additionalDocs: [],
+  dbs: [],
   page: "",
 };
 const initialContextData: IOnBoardingContextData = {

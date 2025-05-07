@@ -54,11 +54,18 @@ export const ourFileRouter = {
     return { uploadedBy: "Shiftly UK" };
   }),
   additionalDocs: f({
-    pdf: { maxFileSize: "16MB", maxFileCount: 4 },
+    pdf: { maxFileSize: "16MB", maxFileCount: 2 },
   }).onUploadComplete(async ({  file }) => {
     console.log("file url", file.url);
     return { uploadedBy: "Shiftly UK" };
   }),
+  dbs: f({
+    pdf: { maxFileSize: "16MB", maxFileCount: 2 },
+  }).onUploadComplete(async ({  file }) => {
+    console.log("file url", file.url);
+    return { uploadedBy: "Shiftly UK" };
+  }),
+
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;
