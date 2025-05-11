@@ -7,14 +7,19 @@ import NotAuthorized from "@/components/NotAuthorized";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import React from "react";
-import { DoctorProps, } from "../../../doctor/patients/layout";
+import { DoctorProps } from "../../../doctor/patients/layout";
 
 export default async function page() {
   const session = await getServerSession(authOptions);
   const user = session?.user;
-  if (user?.role !== "USER") {
+  
+  // Updated to authorize USER, CLIENT, and INDIVIDUALCLIENT roles
+  const authorizedRoles = ["USER", "CLIENT", "INDIVIDUALCLIENT"];
+  
+  if (!user?.role || !authorizedRoles.includes(user.role)) {
     return <NotAuthorized />;
   }
+  
   const appointments = (await getPatientAppointments(user?.id)).data || [];
 
   const uniquePatientsMap = new Map();
@@ -27,13 +32,16 @@ export default async function page() {
       });
     }
   });
+  
   const doctors = Array.from(uniquePatientsMap.values()) as DoctorProps[];
   console.log(doctors);
+  
   const users = doctors.map((doctor) => {
     return {
       label: doctor.doctorName,
       value: doctor.doctorId,
     };
   });
+  
   return <InboxForm users={users} session={session} title="New Message" />;
 }

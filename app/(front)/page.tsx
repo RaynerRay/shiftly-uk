@@ -6,6 +6,7 @@ import Hero from "@/components/frontend/Hero";
 // import Banner from "@/components/frontend/Banner";
 import CareServices from "@/components/Home/CareServices";
 import Media from "@/components/Home/Media";
+import FAQ from "@/components/Home/FAQ";
 
 export default async function Home() {
   return (
@@ -60,6 +61,7 @@ export default async function Home() {
         {/* <LogoClouds /> */}
         <CareServices />
         <Media />
+        <FAQ />
       </section>
     </>
   );

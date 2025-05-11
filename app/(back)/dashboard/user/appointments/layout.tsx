@@ -14,9 +14,14 @@ export default async function AppointmentLayout({
 }) {
   const session = await getServerSession(authOptions);
   const user = session?.user;
-  if (user?.role !== "USER") {
+  
+  // Updated to authorize USER, CLIENT, and INDIVIDUALCLIENT roles
+  const authorizedRoles = ["USER", "CLIENT", "INDIVIDUALCLIENT"];
+  
+  if (!user?.role || !authorizedRoles.includes(user.role)) {
     return <NotAuthorized />;
   }
+  
   const appointments = (await getPatientAppointments(user?.id)).data || [];
   return (
     <div>

@@ -12,6 +12,7 @@ import { authOptions } from "@/lib/auth";
 import { Users } from "lucide-react";
 import { getServerSession } from "next-auth";
 import React, { ReactNode } from "react";
+
 export interface PatientProps {
   patientId: string;
   name: string;
@@ -22,10 +23,12 @@ export interface PatientProps {
   occupation: string;
   dob: string;
 }
+
 export interface DoctorProps {
   doctorId: string;
   doctorName: string;
 }
+
 export default async function PatientLayout({
   children,
 }: {
@@ -33,9 +36,14 @@ export default async function PatientLayout({
 }) {
   const session = await getServerSession(authOptions);
   const user = session?.user;
-  if (user?.role !== "USER") {
+  
+  // Updated to authorize USER, CLIENT, and INDIVIDUALCLIENT roles
+  const authorizedRoles = ["USER", "CLIENT", "INDIVIDUALCLIENT"];
+  
+  if (!user?.role || !authorizedRoles.includes(user.role)) {
     return <NotAuthorized />;
   }
+  
   const appointments = (await getPatientAppointments(user?.id)).data || [];
 
   const uniquePatientsMap = new Map();
@@ -48,19 +56,21 @@ export default async function PatientLayout({
       });
     }
   });
+  
   const doctors = Array.from(uniquePatientsMap.values()) as DoctorProps[];
+  
   return (
     <div>
       <div className="grid grid-cols-12">
         {/* LIST PANNEL */}
-        <div className="col-span-6  py-3 border-r border-gray-100">
+        <div className="col-span-6 py-3 border-r border-gray-100">
           <PanelHeader
             title="Professionals"
             count={doctors.length ?? 0}
             icon={Users}
           />
           <div className="px-3">
-            <DoctorsPanel doctors={doctors} role={user?.role} />
+            <DoctorsPanel doctors={doctors} role={user.role} />
           </div>
         </div>
 

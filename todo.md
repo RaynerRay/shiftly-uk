@@ -9,3 +9,5 @@ fix  SpecialtyForm
 ## add whatsaapp notifications
 
 ## change date
+
+## individual and client dashboard

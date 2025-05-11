@@ -88,7 +88,7 @@ console.log(setSelectedUser)
             {title}
           </h1>
           <Button type="button" asChild variant={"outline"}>
-            <Link href="/dashboard/doctor/inbox">
+            <Link href="/dashboard">
               <X className="w-4 h-4" />
             </Link>
           </Button>
