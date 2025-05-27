@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { SocialIcon } from 'react-social-icons/component'
 import 'react-social-icons/x'
 import 'react-social-icons/tiktok'
+import 'react-social-icons/facebook'
 
 const page = () => {
   return (
@@ -38,11 +39,15 @@ const page = () => {
                   </div>
                   <div className="single-contact flex items-center mb-4">
                     <Mail className="text-gray-50 mr-4  bg-sky-500 p-1" />
-                    <p><a href="mailto:Feedback@property.com">info@shitly.uk</a></p>
+                    <p><a href="mailto:Feedback@property.com">ukshiftly@gmail.com</a></p>
                   </div>
                   <div className="single-contact flex items-center mb-4">
                     <Phone className="text-gray-50 mr-4  bg-sky-500 p-1" />
                     <p><a href="tel:+447908029287">+44-794-763-7714</a></p>
+                  </div>
+                  <div className="single-contact flex items-center mb-4">
+                    <Phone className="text-gray-50 mr-4  bg-sky-500 p-1" />
+                    
                     <p><a href="tel:+447908029287">+44-790-802-9287</a></p>
                   </div>
                 </div>
@@ -105,8 +110,9 @@ const page = () => {
                 </div>
               </form> */}
                 <div className="social-icon flex space-x-4 mt-6">
-                <SocialIcon url="https://x.com/MarketHub_Zim" target="_blank" />
-                <SocialIcon url="https://www.tiktok.com/@markethubzim" target="_blank" />
+                {/* <SocialIcon url="https://x.com/MarketHub_Zim" target="_blank" />
+                <SocialIcon url="https://www.tiktok.com/@markethubzim" target="_blank" /> */}
+                <SocialIcon url="https://www.facebook.com/profile.php?id=61575040061966" target="_blank" />
                   {/* <Link className="facebook" href="#" target="_blank">
                     <SocialIcon url="www.facebook.com" />
                   </Link>

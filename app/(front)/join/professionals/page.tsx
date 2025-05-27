@@ -30,7 +30,7 @@ const faqs = {
       qn: "How often should I update my availability?",
       ans: "You can set your availability up to 14 days in advance. We recommend keeping it updated regularly to get the most recent job offers.",
     },
-   
+
     {
       qn: "What documents are required during the registration process?",
       ans: "Carers should provide their up-to-date Mandatory Training Certificates or, optionally, an NVQ Diploma/Care Certificate. For specialist skills like medication administration or having a driving license, related certificates are needed. Nurses must provide their Mandatory Training Certificates. Both roles require a clear Disclosure and Barring Service certificate (DBS) certificate (no older than 2 years, ideally on a live register), a recent professional photo, and contact details for two referees.",
@@ -39,7 +39,7 @@ const faqs = {
       qn: "Who can serve as my referee?",
       ans: "Carers need one professional reference, typically from a previous care employer, and one personal reference from someone who knows you well. Nurses are required to provide two professional references from a senior nurse, clinical manager, or nursing agency.",
     },
-   
+
     {
       qn: "Can I cancel an accepted work assignment?",
       ans: "Once you accept an assignment, you're expected to complete it. If necessary, you can cancel with a valid reason by giving at least 12 hours' notice.",
@@ -187,7 +187,10 @@ const Page: FC = () => {
               <div className="grid grid-cols-1 md:grid-cols-2">
                 {cards.map((card, i) => {
                   return (
-                    <div key={i} className="w-full xl:w-auto  border border-sky-200 rounded-md mx-1">
+                    <div
+                      key={i}
+                      className="w-full xl:w-auto  border border-sky-200 rounded-md mx-1"
+                    >
                       <div className="xl:max-w-sm h-full">
                         <div className="px-9 py-8 h-full bg-sky-50 rounded-md shadow-7xl ">
                           <div className="flex flex-col justify-between h-full ">
@@ -225,103 +228,101 @@ const Page: FC = () => {
               </h1>
             </div>
             <div className="max-w-4xl mx-auto p-6">
-      
-
-      {/* Tabs */}
-      <div className="flex justify-center space-x-4 mb-8">
-        <button
-          className={`py-3 px-2 text-lg font-semibold transition-all duration-200 ease-in-out
+              {/* Tabs */}
+              <div className="flex justify-center space-x-4 mb-8">
+                <button
+                  className={`py-3 px-2 text-lg font-semibold transition-all duration-200 ease-in-out
             ${
               activeTab === "worker"
                 ? "text-white bg-sky-600 shadow-lg shadow-sky-200"
                 : "text-gray-600 bg-gray-100 hover:bg-gray-200"
             } rounded-lg`}
-          onClick={() => setActiveTab("worker")}
-        >
-          For Workers
-        </button>
-        <button
-          className={`py-3 px-8 text-lg font-semibold transition-all duration-200 ease-in-out
+                  onClick={() => setActiveTab("worker")}
+                >
+                  For Workers
+                </button>
+                <button
+                  className={`py-3 px-8 text-lg font-semibold transition-all duration-200 ease-in-out
             ${
               activeTab === "client"
                 ? "text-white bg-sky-600 shadow-lg shadow-sky-200"
                 : "text-gray-600 bg-gray-100 hover:bg-gray-200"
             } rounded-lg`}
-          onClick={() => setActiveTab("client")}
-        >
-          For Clients
-        </button>
-      </div>
+                  onClick={() => setActiveTab("client")}
+                >
+                  For Clients
+                </button>
+              </div>
 
-      {/* FAQ Content */}
-      <div className=" shadow-lg rounded-xl p-6 border border-gray-100">
-        {activeTab === "client" &&
-          faqs.client.map((faq, index) => (
-            <div 
-              key={index} 
-              className={`border-b border-gray-200 ${
-                index === faqs.client.length - 1 ? 'border-b-0' : ''
-              }`}
-            >
-              <button
-                onClick={() => toggleFAQ(index)}
-                className="py-4 w-full flex justify-between items-center group hover:text-sky-600 transition-colors duration-200"
-              >
-                <span className="text-lg font-semibold text-gray-800 group-hover:text-sky-600">
-                  {faq.qn}
-                </span>
-                <div className="flex-shrink-0 ml-4">
-                  {activeIndex === index ? (
-                    <ChevronUp className="w-6 h-6 text-sky-600" />
-                  ) : (
-                    <ChevronDown className="w-6 h-6 text-gray-400 group-hover:text-sky-600" />
-                  )}
-                </div>
-              </button>
-              {activeIndex === index && (
-                <div className="pb-4 pr-12">
-                  <p className="text-gray-600 leading-relaxed">
-                    {faq.ans}
-                  </p>
-                </div>
-              )}
-            </div>
-          ))}
+              {/* FAQ Content */}
+              <div className=" shadow-lg rounded-xl p-6 border border-gray-100">
+                {activeTab === "client" &&
+                  faqs.client.map((faq, index) => (
+                    <div
+                      key={index}
+                      className={`border-b border-gray-200 ${
+                        index === faqs.client.length - 1 ? "border-b-0" : ""
+                      }`}
+                    >
+                      <button
+                        onClick={() => toggleFAQ(index)}
+                        className="py-4 w-full flex justify-between items-center group hover:text-sky-600 transition-colors duration-200"
+                      >
+                        <span className="text-lg font-semibold text-gray-800 group-hover:text-sky-600">
+                          {faq.qn}
+                        </span>
+                        <div className="flex-shrink-0 ml-4">
+                          {activeIndex === index ? (
+                            <ChevronUp className="w-6 h-6 text-sky-600" />
+                          ) : (
+                            <ChevronDown className="w-6 h-6 text-gray-400 group-hover:text-sky-600" />
+                          )}
+                        </div>
+                      </button>
+                      {activeIndex === index && (
+                        <div className="pb-4 pr-12">
+                          <p className="text-gray-600 leading-relaxed">
+                            {faq.ans}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  ))}
 
-        {activeTab === "worker" &&
-          faqs.worker.map((faq, index) => (
-            <div 
-              key={index} 
-              className={`border-b border-gray-200 ${
-                index === faqs.worker.length - 1 ? 'border-b-0' : ''
-              }`}
-            >
-              <button
-                onClick={() => toggleFAQ(index)}
-                className="py-4 w-full flex justify-between items-center group hover:text-sky-600 transition-colors duration-200"
-              >
-                <span className="text-lg font-semibold text-gray-800 group-hover:text-sky-600">
-                  {faq.qn}
-                </span>
-                <div className="flex-shrink-0 ml-4">
-                  {activeIndex === index ? (
-                    <ChevronUp className="w-6 h-6 text-sky-600" />
-                  ) : (
-                    <ChevronDown className="w-6 h-6 text-gray-400 group-hover:text-sky-600" />
-                  )}
-                </div>
-              </button>
-              {activeIndex === index && (
-                <div className="pb-4 pr-12">
-                  <p className="text-gray-600 leading-relaxed">
-                    {faq.ans}
-                  </p>
-                </div>
-              )}
+                {activeTab === "worker" &&
+                  faqs.worker.map((faq, index) => (
+                    <div
+                      key={index}
+                      className={`border-b border-gray-200 ${
+                        index === faqs.worker.length - 1 ? "border-b-0" : ""
+                      }`}
+                    >
+                      <button
+                        onClick={() => toggleFAQ(index)}
+                        className="py-4 w-full flex justify-between items-center group hover:text-sky-600 transition-colors duration-200"
+                      >
+                        <span className="text-lg font-semibold text-gray-800 group-hover:text-sky-600">
+                          {faq.qn}
+                        </span>
+                        <div className="flex-shrink-0 ml-4">
+                          {activeIndex === index ? (
+                            <ChevronUp className="w-6 h-6 text-sky-600" />
+                          ) : (
+                            <ChevronDown className="w-6 h-6 text-gray-400 group-hover:text-sky-600" />
+                          )}
+                        </div>
+                      </button>
+                      {activeIndex === index && (
+                        <div className="pb-4 pr-12">
+                          <p className="text-gray-600 leading-relaxed">
+                            {faq.ans}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+              </div>
             </div>
-          ))}
-      </div>
-    </div>
           </div>
         </div>
       </div>
