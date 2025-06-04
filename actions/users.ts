@@ -83,13 +83,19 @@ export async function createUser(formData: RegisterInputProps) {
         } 
         else if (role === "CLIENT") {
           // Create client profile
-          await createClientProfile({
+          console.log("Creating company client profile for user:", newUser.id);
+          const clientResult = await createClientProfile({
             name: fullName,
             userId: newUser.id,
-            phone: newUser.phone,
+            phone: newUser.phone || "",
             email: newUser.email,
             employersLiability: [],
+            trackingNumber: generateTrackingNumber(),  // Added this as it's required by the onboarding function
           });
+          console.log("Individual client profile creation result:", clientResult);
+          if (clientResult.error) {
+            console.error("Failed to create individual client profile:", clientResult.error);
+          }
         } 
         else if (role === "INDIVIDUALCLIENT") {
           console.log("Creating individual client profile for user:", newUser.id);

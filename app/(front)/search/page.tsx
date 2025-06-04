@@ -1,6 +1,8 @@
 // This is a server component (no need for "use client" here)
 
 import { getDoctorsBySearch } from "@/actions/doctors";
+import { getClientProfileById } from "@/actions/clientonboarding";
+import { getIndividualClientProfileById } from "@/actions/individualclient"; // Add this import
 import DoctorsListWithPagination from "@/components/DoctorsListWithPagination";
 import { separateAndCapitalise } from "@/lib/utils";
 import { Doctor } from "@/types/types";
@@ -14,39 +16,113 @@ export default async function SearchPage(props: any) { // eslint-disable-line @t
   // Get the user's session
   const session = await getServerSession(authOptions);
   
-  // Check if user is authenticated and has the required role
-  const isAuthorized = session?.user && 
-    (session.user.role === "ADMIN" || 
-     session.user.role === "CLIENT" || 
-     session.user.role === "INDIVIDUALCLIENT" ||
-     session.user.role === "USER" 
-     );
-
-  // If not authorized, show the restricted access message
-  if (!isAuthorized) {
+  // Check if user is authenticated
+  if (!session?.user) {
     return (
       <div className="container max-w-7xl mx-auto px-4 py-16">
         <div className="bg-white rounded-lg shadow p-8 text-center">
-          <h1 className="text-2xl font-bold mb-4">Restricted Access</h1>
+          <h1 className="text-2xl font-bold mb-4">Access Restricted</h1>
           <p className="text-gray-700 mb-6">
-            Only registered clients can access our database of professionals.
+            Please log in to access our database of professionals.
           </p>
 
-          <div className="flex gap-6 justify-center max-w-7xl mx-auto px-4 py-16">
-          <Link 
-            href="/signup" 
-            className="inline-block bg-sky-600 hover:bg-sky-700 text-white font-medium py-2 px-6 rounded-full transition-colors"
-          >
-            Login
-          </Link>
-          <Link 
-            href="/register" 
-            className="inline-block bg-sky-600 hover:bg-sky-700 text-white font-medium py-2 px-6 rounded-full transition-colors"
-          >
-            Register Now
-          </Link>
+          <div className="flex gap-6 justify-center">
+            <Link 
+              href="/login" 
+              className="inline-block bg-sky-600 hover:bg-sky-700 text-white font-medium py-2 px-6 rounded-full transition-colors"
+            >
+              Login
+            </Link>
+            <Link 
+              href="/register" 
+              className="inline-block bg-sky-600 hover:bg-sky-700 text-white font-medium py-2 px-6 rounded-full transition-colors"
+            >
+              Register Now
+            </Link>
           </div>
-          
+        </div>
+      </div>
+    );
+  }
+
+  // For CLIENT and INDIVIDUALCLIENT roles, check approval status
+  let isApproved = false;
+  let clientProfile = null;
+  
+  if (session.user.role === "CLIENT") {
+    const profileResponse = await getClientProfileById(session.user.id);
+    console.log(profileResponse)
+    clientProfile = profileResponse?.data;
+    isApproved = clientProfile?.status === "APPROVED";
+  } else if (session.user.role === "INDIVIDUALCLIENT") {
+    const profileResponse = await getIndividualClientProfileById(session.user.id);
+    clientProfile = profileResponse?.data;
+    console.log(profileResponse)
+    isApproved = clientProfile?.status === "APPROVED";
+  }
+  
+  // Check if user is authorized (ADMIN always authorized, clients need approval)
+  const isAuthorized = session.user.role === "ADMIN" || 
+    ((session.user.role === "CLIENT" || session.user.role === "INDIVIDUALCLIENT") && isApproved);
+
+  // If not authorized, show the appropriate message based on user status
+  if (!session?.user) {
+    // User is not logged in
+    return (
+      <div className="container max-w-7xl mx-auto px-4 py-16">
+        <div className="bg-white rounded-lg shadow p-8 text-center">
+          <h1 className="text-2xl font-bold mb-4">Access Restricted</h1>
+          <p className="text-gray-700 mb-6">
+            Please log in to access our database of professionals.
+          </p>
+
+          <div className="flex gap-6 justify-center">
+            <Link 
+              href="/login" 
+              className="inline-block bg-sky-600 hover:bg-sky-700 text-white font-medium py-2 px-6 rounded-full transition-colors"
+            >
+              Login
+            </Link>
+            <Link 
+              href="/register" 
+              className="inline-block bg-sky-600 hover:bg-sky-700 text-white font-medium py-2 px-6 rounded-full transition-colors"
+            >
+              Register Now
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthorized) {
+    // User is logged in but doesn't have the right role or approval status
+    const isClientRole = session.user.role === "CLIENT" || session.user.role === "INDIVIDUALCLIENT";
+    const isPendingApproval = isClientRole && !isApproved;
+    
+    return (
+      <div className="container max-w-7xl mx-auto px-4 py-16">
+        <div className="bg-white rounded-lg shadow p-8 text-center">
+          <h1 className="text-2xl font-bold mb-4">
+            {isPendingApproval ? "Account Pending Approval" : "Access Restricted"}
+          </h1>
+          <p className="text-gray-700 mb-6">
+            {isPendingApproval 
+              ? "Your account is currently under review. You'll be able to access our database of professionals once your account is approved."
+              : "Only approved clients can access our database of professionals."
+            }
+          </p>
+
+          {!isPendingApproval && (
+            <div className="flex gap-6 justify-center">
+              <Link 
+                href="/register" 
+                className="inline-block bg-sky-600 hover:bg-sky-700 text-white font-medium py-2 px-6 rounded-full transition-colors"
+              >
+                Register as Client
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     );

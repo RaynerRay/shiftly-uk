@@ -210,7 +210,7 @@ export async function completeClientProfile(id: string | undefined, data: any) {
   }
 }
 
-export async function getClientProfileById(userId: string) {
+export async function getClientProfileById(userId: string ) {
   if (userId) {
     try {
       const profile = await prismaClient.clientProfile.findUnique({
