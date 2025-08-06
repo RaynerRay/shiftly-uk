@@ -12,7 +12,7 @@ import {
 
 import { getAdminAnalytics } from "@/actions/stats";
 import AnalyticsCard from "../AnalyticsCard";
-import { getDoctorsAdmin } from "@/actions/users";
+import { getClientsAdmin, getDoctorsAdmin } from "@/actions/users";
 import { getInitials } from "@/utils/generateInitials";
 import ApproveBtn from "./ApproveBtn";
 import { getAppointments } from "@/actions/appointments";
@@ -26,6 +26,7 @@ export default async function Dashboard({
 })  {
   const analytics = await getAdminAnalytics();
   const doctors = (await getDoctorsAdmin()) || [];
+  const clients = (await getClientsAdmin()) || [];
   // const session = await getServerSession(authOptions);
   const user = session?.user;
   const appointments = (await getAppointments()).data || [];
@@ -48,104 +49,107 @@ export default async function Dashboard({
   const patients = Array.from(uniquePatientsMap.values()) as PatientProps[];
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
-      <p>{user?.role}</p>
-      <h1 className="scroll-m-20 text-2xl font-extrabold tracking-tight mb-3">
-        Welcome, Admin {user?.name}
-      </h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {analytics.map((item, i) => {
-          return <AnalyticsCard key={i} data={item} />;
-        })}
-      </div>
-      <div className="grid gap-4 md:gap-8 lg:grid-cols-2 grid-cols-1 ">
-        <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle>Recent Doctors</CardTitle>
-              <Button asChild>
-                <Link href="/dashboard/doctors">View All</Link>
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent className="grid gap-8">
-            {doctors &&
-              doctors.slice(0, 5).map((doctor) => {
-                const initials = getInitials(doctor.name);
-                return (
-                  <div key={doctor.id} className="flex items-center gap-4">
-                    <Avatar className="hidden h-9 w-9 sm:flex">
-                      <AvatarImage
-                        src={doctor.doctorProfile?.profilePicture ?? ""}
-                        alt="Avatar"
-                      />
-                      <AvatarFallback>{initials}</AvatarFallback>
-                    </Avatar>
-                    <div className="grid gap-1">
-                      <p className="text-sm font-medium leading-none">
-                        {doctor.name}
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        {doctor.email}
-                      </p>
-                    </div>
-                    <div className="ml-auto font-medium flex space-x-2 items-center">
-                      <Button size={"sm"} asChild variant={"outline"}>
-                        <Link href={`/dashboard/doctors/view/${doctor.id}`}>
-                          View
-                        </Link>
-                      </Button>
-                      <ApproveBtn
-                        status={doctor.doctorProfile?.status ?? "PENDING"}
-                        profileId={doctor.doctorProfile?.id ?? ""}
-                      />
-                    </div>
+    <p className="text-sm text-muted-foreground">{user?.role}</p>
+  
+    <h1 className="scroll-m-20 text-2xl font-extrabold tracking-tight mb-3">
+      Welcome, Admin
+    </h1>
+  
+    {/* Analytics Cards */}
+    {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {analytics.map((item, i) => (
+        <AnalyticsCard key={i} data={item} />
+      ))}
+    </div> */}
+  
+    {/* Doctors & Clients Section */}
+    <div className="grid gap-4 lg:grid-cols-2">
+      {/* Recent Doctors */}
+      <Card>
+        <CardHeader>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <CardTitle>Recent Professionals</CardTitle>
+            <Button asChild size="sm" className="w-full sm:w-auto">
+              <Link href="/dashboard/doctors">View All</Link>
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent className="grid gap-6">
+          {doctors.slice(0, 5).map((doctor) => {
+            const initials = getInitials(doctor.name);
+            return (
+              <div
+                key={doctor.id}
+                className="flex flex-col sm:flex-row sm:items-center gap-3"
+              >
+                <div className="flex items-center gap-3 min-w-0">
+                  <Avatar className="h-9 w-9 hidden sm:flex">
+                    <AvatarImage
+                      src={doctor.doctorProfile?.profilePicture ?? ""}
+                      alt="Avatar"
+                    />
+                    <AvatarFallback>{initials}</AvatarFallback>
+                  </Avatar>
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium truncate">{doctor.name}</p>
+                    <p className="text-sm text-muted-foreground truncate">{doctor.email}</p>
                   </div>
-                );
-              })}
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle>Recent Clients</CardTitle>
-              <Button asChild>
-                <Link href="/dashboard/patients">View All</Link>
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent className="grid gap-8">
-            {patients &&
-              patients.slice(0, 5).map((patient) => {
-                const initials = getInitials(patient.name);
-                return (
-                  <div key={patient.email} className="flex items-center gap-4">
-                    <Avatar className="hidden h-9 w-9 sm:flex">
-                      <AvatarImage src={""} alt="Avatar" />
-                      <AvatarFallback>{initials}</AvatarFallback>
-                    </Avatar>
-                    <div className="grid gap-1">
-                      <p className="text-sm font-medium leading-none">
-                        {patient.name}
-                      </p>
-                      <p className="text-sm text-muted-foreground">
-                        {patient.email}
-                      </p>
-                    </div>
-                    <div className="ml-auto font-medium flex space-x-2 items-center">
-                      <Button size={"sm"} asChild variant={"outline"}>
-                        <Link
-                          href={`/dashboard/patients/view/${patient.patientId}`}
-                        >
-                          View
-                        </Link>
-                      </Button>
-                    </div>
+                </div>
+                <div className="sm:ml-auto flex gap-2">
+                  <Button size="sm" asChild variant="outline">
+                    <Link href={`/dashboard/doctors/view/${doctor.id}`}>View</Link>
+                  </Button>
+                  <ApproveBtn
+                    status={doctor.doctorProfile?.status ?? "PENDING"}
+                    profileId={doctor.doctorProfile?.id ?? ""}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </CardContent>
+      </Card>
+  
+      {/* Recent Clients */}
+      <Card>
+        <CardHeader>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <CardTitle>Recent Clients</CardTitle>
+            <Button asChild size="sm" className="w-full sm:w-auto">
+              <Link href="/dashboard/patients">View All</Link>
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent className="grid gap-6">
+          {clients.slice(0, 5).map((client) => {
+            const initials = getInitials(client.name);
+            return (
+              <div
+                key={client.email}
+                className="flex flex-col sm:flex-row sm:items-center gap-3"
+              >
+                <div className="flex items-center gap-3 min-w-0">
+                  <Avatar className="h-9 w-9 hidden sm:flex">
+                    <AvatarImage src={""} alt="Avatar" />
+                    <AvatarFallback>{initials}</AvatarFallback>
+                  </Avatar>
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium truncate">{client.name}</p>
+                    <p className="text-sm text-muted-foreground truncate">{client.email}</p>
                   </div>
-                );
-              })}
-          </CardContent>
-        </Card>
-      </div>
-    </main>
+                </div>
+                <div className="sm:ml-auto flex gap-2">
+                  <Button size="sm" asChild variant="outline">
+                    <Link href={`/dashboard/patients/view/${client.id}`}>View</Link>
+                  </Button>
+                </div>
+              </div>
+            );
+          })}
+        </CardContent>
+      </Card>
+    </div>
+  </main>
+  
   );
 }

@@ -299,6 +299,48 @@ export async function getDoctors() {
     return null;
   }
 }
+export async function getClientsAdmin() {
+  try {
+    const clients = await prismaClient.user.findMany({
+      where: {
+        role: "CLIENT" || "INDIVIDUALCLIENT",
+        // doctorProfile: {
+        //   status: "APPROVED" // Only get verified clients
+        // }
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        slug: true,
+        phone: true,
+        // doctorProfile: {
+        //   select: {
+        //     id: true,
+        //     firstName: true,
+        //     lastName: true,
+        //     gender: true,
+        //     bio: true,
+        //     profilePicture: true,
+        //     profession: true,
+        //     hourlyWage: true,
+        //     status: true,
+        //     dob: true,
+        //     middleName: true,
+            
+        //     // Add other specific fields you need from the DoctorProfile
+           
+        //   },
+        // },
+      },
+    });
+
+    return clients;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
 
 export async function getDoctorsAdmin() {
   try {
