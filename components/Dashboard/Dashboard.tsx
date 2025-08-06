@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 
 import { getAdminAnalytics } from "@/actions/stats";
-import AnalyticsCard from "../AnalyticsCard";
+// import AnalyticsCard from "../AnalyticsCard";
 import { getClientsAdmin, getDoctorsAdmin } from "@/actions/users";
 import { getInitials } from "@/utils/generateInitials";
 import ApproveBtn from "./ApproveBtn";
@@ -24,7 +24,7 @@ export default async function Dashboard({
 }: {
   session: Session | null;
 })  {
-  const analytics = await getAdminAnalytics();
+  // const analytics = await getAdminAnalytics();
   const doctors = (await getDoctorsAdmin()) || [];
   const clients = (await getClientsAdmin()) || [];
   // const session = await getServerSession(authOptions);
@@ -46,7 +46,7 @@ export default async function Dashboard({
       });
     }
   });
-  const patients = Array.from(uniquePatientsMap.values()) as PatientProps[];
+  // const patients = Array.from(uniquePatientsMap.values()) as PatientProps[];
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
     <p className="text-sm text-muted-foreground">{user?.role}</p>

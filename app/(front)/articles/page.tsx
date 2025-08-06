@@ -1,7 +1,7 @@
 // app/blogs/page.tsx
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { getBlogPosts, BlogPostProps } from "@/actions/blogs";
 import { Search } from "lucide-react";
 import { categoryOptions } from "@/lib/blogCategories";
@@ -21,35 +21,35 @@ export default function BlogsPage() {
   const [searchInput, setSearchInput] = useState("");
   
   // Function to fetch blogs
-  const fetchBlogs = async (filterParams: typeof filters) => {
-    setLoading(true);
-    try {
-      const response = await getBlogPosts({
-        search: filterParams.search,
-        category: filterParams.category,
-        sort: filterParams.sort,
-        onlyPublished: true,
-      });
-      
-      if (response.status === 200 && response.data) {
-        setBlogs(response.data);
-        setError(null);
-      } else {
-        setError("Failed to load blog posts");
-        console.error("Error from server:", response.error);
-      }
-    } catch (err) {
-      console.error("Error fetching blogs:", err);
-      setError("An error occurred while fetching blogs");
-    } finally {
-      setLoading(false);
-    }
-  };
+ // ✅ Wrap in useCallback to fix missing dependency warning
+ const fetchBlogs = useCallback(async (filterParams: typeof filters) => {
+  setLoading(true);
+  try {
+    const response = await getBlogPosts({
+      search: filterParams.search,
+      category: filterParams.category,
+      sort: filterParams.sort,
+      onlyPublished: true,
+    });
 
-  // Initial load
-  useEffect(() => {
-    fetchBlogs(filters);
-  }, [filters]); // Include filters dependency
+    if (response.status === 200 && response.data) {
+      setBlogs(response.data);
+      setError(null);
+    } else {
+      setError("Failed to load blog posts");
+      console.error("Error from server:", response.error);
+    }
+  } catch (err) {
+    console.error("Error fetching blogs:", err);
+    setError("An error occurred while fetching blogs");
+  } finally {
+    setLoading(false);
+  }
+}, []);
+
+useEffect(() => {
+  fetchBlogs(filters);
+}, [filters, fetchBlogs]);
   
   // Handle filter changes with debouncing
   useEffect(() => {
