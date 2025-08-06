@@ -303,7 +303,9 @@ export async function getClientsAdmin() {
   try {
     const clients = await prismaClient.user.findMany({
       where: {
-        role: "CLIENT" || "INDIVIDUALCLIENT",
+        role: {
+          in: ["CLIENT", "INDIVIDUALCLIENT"],
+        },
         // doctorProfile: {
         //   status: "APPROVED" // Only get verified clients
         // }
