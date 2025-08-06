@@ -10,13 +10,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import { getAdminAnalytics } from "@/actions/stats";
+// import { getAdminAnalytics } from "@/actions/stats";
 // import AnalyticsCard from "../AnalyticsCard";
 import { getClientsAdmin, getDoctorsAdmin } from "@/actions/users";
 import { getInitials } from "@/utils/generateInitials";
 import ApproveBtn from "./ApproveBtn";
 import { getAppointments } from "@/actions/appointments";
-import { PatientProps } from "@/app/(back)/dashboard/doctors/layout";
+// import { PatientProps } from "@/app/(back)/dashboard/doctors/layout";
 import { Session } from "next-auth";
 
 export default async function Dashboard({
