@@ -82,7 +82,7 @@ export default async function PatientDetailsPage({
           <AlertTriangle className="w-12 h-12 text-amber-500" />
           <div>
             <h2 className="text-xl font-semibold text-slate-800 mb-2">No Patient Found</h2>
-            <p className="text-slate-600">The patient profile you're looking for doesn't exist or has been removed.</p>
+            <p className="text-slate-600">The patient profile you are looking for does not exist or has been removed.</p>
           </div>
         </div>
       </div>
@@ -352,7 +352,7 @@ export default async function PatientDetailsPage({
                   <div className="text-center py-12">
                     <Calendar className="w-12 h-12 text-slate-300 mx-auto mb-4" />
                     <h3 className="text-lg font-semibold text-slate-800 mb-2">No Appointments</h3>
-                    <p className="text-slate-500">This patient doesn't have any appointments scheduled yet.</p>
+                    <p className="text-slate-500">This patient does not have any appointments scheduled yet.</p>
                   </div>
                 )}
               </TabsContent>
