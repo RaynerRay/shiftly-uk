@@ -63,92 +63,93 @@ export default async function Dashboard({
     </div> */}
   
     {/* Doctors & Clients Section */}
-    <div className="grid gap-4 lg:grid-cols-2">
-      {/* Recent Doctors */}
-      <Card>
-        <CardHeader>
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-            <CardTitle>Recent Professionals</CardTitle>
-            <Button asChild size="sm" className="w-full sm:w-auto">
-              <Link href="/dashboard/doctors">View All</Link>
-            </Button>
-          </div>
-        </CardHeader>
-        <CardContent className="grid gap-6">
-          {doctors.slice(0, 5).map((doctor) => {
-            const initials = getInitials(doctor.name);
-            return (
-              <div
-                key={doctor.id}
-                className="flex flex-col sm:flex-row sm:items-center gap-3"
-              >
-                <div className="flex items-center gap-3 min-w-0">
-                  <Avatar className="h-9 w-9 hidden sm:flex">
-                    <AvatarImage
-                      src={doctor.doctorProfile?.profilePicture ?? ""}
-                      alt="Avatar"
-                    />
-                    <AvatarFallback>{initials}</AvatarFallback>
-                  </Avatar>
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium truncate">{doctor.name}</p>
-                    <p className="text-sm text-muted-foreground truncate">{doctor.email}</p>
-                  </div>
-                </div>
-                <div className="sm:ml-auto flex gap-2">
-                  <Button size="sm" asChild variant="outline">
-                    <Link href={`/dashboard/doctors/view/${doctor.id}`}>View</Link>
-                  </Button>
-                  <ApproveBtn
-                    status={doctor.doctorProfile?.status ?? "PENDING"}
-                    profileId={doctor.doctorProfile?.id ?? ""}
-                  />
-                </div>
+    <div className="grid gap-6 md:gap-8 lg:gap-10 xl:grid-cols-2 max-w-7xl mx-auto w-full">
+  {/* Recent Doctors */}
+  <Card className="w-full">
+    <CardHeader>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <CardTitle>Recent Professionals</CardTitle>
+        <Button asChild size="sm" className="w-full sm:w-auto">
+          <Link href="/dashboard/doctors">View All</Link>
+        </Button>
+      </div>
+    </CardHeader>
+    <CardContent className="grid gap-6">
+      {doctors.slice(0, 5).map((doctor) => {
+        const initials = getInitials(doctor.name);
+        return (
+          <div
+            key={doctor.id}
+            className="flex flex-col sm:flex-row sm:items-center gap-3 p-2 rounded-lg hover:bg-muted transition"
+          >
+            <div className="flex items-center gap-3 min-w-0">
+              <Avatar className="h-9 w-9 hidden sm:flex">
+                <AvatarImage
+                  src={doctor.doctorProfile?.profilePicture ?? ""}
+                  alt="Avatar"
+                />
+                <AvatarFallback>{initials}</AvatarFallback>
+              </Avatar>
+              <div className="min-w-0">
+                <p className="text-sm font-medium truncate">{doctor.name}</p>
+                <p className="text-sm text-muted-foreground truncate">{doctor.email}</p>
               </div>
-            );
-          })}
-        </CardContent>
-      </Card>
-  
-      {/* Recent Clients */}
-      <Card>
-        <CardHeader>
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-            <CardTitle>Recent Clients</CardTitle>
-            <Button asChild size="sm" className="w-full sm:w-auto">
-              <Link href="/dashboard/patients">View All</Link>
-            </Button>
+            </div>
+            <div className="sm:ml-auto flex gap-2">
+              <Button size="sm" asChild variant="outline">
+                <Link href={`/dashboard/doctors/view/${doctor.id}`}>View</Link>
+              </Button>
+              <ApproveBtn
+                status={doctor.doctorProfile?.status ?? "PENDING"}
+                profileId={doctor.doctorProfile?.id ?? ""}
+              />
+            </div>
           </div>
-        </CardHeader>
-        <CardContent className="grid gap-6">
-          {clients.slice(0, 5).map((client) => {
-            const initials = getInitials(client.name);
-            return (
-              <div
-                key={client.email}
-                className="flex flex-col sm:flex-row sm:items-center gap-3"
-              >
-                <div className="flex items-center gap-3 min-w-0">
-                  <Avatar className="h-9 w-9 hidden sm:flex">
-                    <AvatarImage src={""} alt="Avatar" />
-                    <AvatarFallback>{initials}</AvatarFallback>
-                  </Avatar>
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium truncate">{client.name}</p>
-                    <p className="text-sm text-muted-foreground truncate">{client.email}</p>
-                  </div>
-                </div>
-                <div className="sm:ml-auto flex gap-2">
-                  <Button size="sm" asChild variant="outline">
-                    <Link href={`/dashboard/patients/view/${client.id}`}>View</Link>
-                  </Button>
-                </div>
+        );
+      })}
+    </CardContent>
+  </Card>
+
+  {/* Recent Clients */}
+  <Card className="w-full">
+    <CardHeader>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+        <CardTitle>Recent Clients</CardTitle>
+        <Button asChild size="sm" className="w-full sm:w-auto">
+          <Link href="/dashboard/patients">View All</Link>
+        </Button>
+      </div>
+    </CardHeader>
+    <CardContent className="grid gap-6">
+      {clients.slice(0, 5).map((client) => {
+        const initials = getInitials(client.name);
+        return (
+          <div
+            key={client.email}
+            className="flex flex-col sm:flex-row sm:items-center gap-3 p-2 rounded-lg hover:bg-muted transition"
+          >
+            <div className="flex items-center gap-3 min-w-0">
+              <Avatar className="h-9 w-9 hidden sm:flex">
+                <AvatarImage src={""} alt="Avatar" />
+                <AvatarFallback>{initials}</AvatarFallback>
+              </Avatar>
+              <div className="min-w-0">
+                <p className="text-sm font-medium truncate">{client.name}</p>
+                <p className="text-sm text-muted-foreground truncate">{client.email}</p>
               </div>
-            );
-          })}
-        </CardContent>
-      </Card>
-    </div>
+            </div>
+            <div className="sm:ml-auto flex gap-2">
+              <Button size="sm" asChild variant="outline">
+                <Link href={`/dashboard/patients/view/${client.id}`}>View</Link>
+              </Button>
+            </div>
+          </div>
+        );
+      })}
+    </CardContent>
+  </Card>
+</div>
+
   </main>
   
   );
